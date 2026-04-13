@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="save">সেভ করুন</string>
+    <string name="title">শিরোনাম</string>
+    <string name="notes_hint">আপনার নোট এখানে লিখুন</string>
+    <string name="delete">মুছে ফেলুন</string>
+    <string name="add_note">নোট যোগ করুন</string>
+    <string name="searchbar_hint">খুঁজুন</string>
+    <string name="navigation_drawer_description">নেভিগেশন ড্রয়ার</string>
+    <string name="layout_switch_description">লেআউট পরিবর্তন করুন</string>
+    <string name="bold_style_description">বোল্ড স্টাইল</string>
+    <string name="italic_style_description">ইতালিক স্টাইল</string>
+    <string name="underline_style_description">আন্ডারলাইন স্টাইল</string>
+    <string name="notes">নোট</string>
+    <string name="settings">সেটিংস</string>
+    <string name="search_delete_button_description">সাজেশন মুছে ফেলুন</string>
 </resources>
