@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="save">Salva</string>
+    <string name="title">Titolo</string>
+    <string name="notes_hint">Scrivi le tue note qui</string>
+    <string name="delete">Cancella</string>
+    <string name="add_note">Aggiungi nota</string>
+    <string name="searchbar_hint">Cerca</string>
+    <string name="layout_switch_description">Cambia layout</string>
+    <string name="bold_style_description">Stile grassetto</string>
+    <string name="italic_style_description">Stile corsivo</string>
+    <string name="underline_style_description">Stile sottolineato</string>
+    <string name="notes">Note</string>
+    <string name="settings">Impostazioni</string>
+    <string name="search_delete_button_description">Elimina suggerimento</string>
+    <string name="appearance">Aspetto</string>
+    <string name="about">Informazioni</string>
+    <string name="about_summary">Informazioni sull\'applicazione</string>
+    <string name="theme">Tema</string>
+    <string name="theme_light">Chiaro</string>
+    <string name="theme_dark">Scuro</string>
+    <string name="theme_system">Default di sistema</string>
+    <string name="okay">Ok</string>
+    <string name="cancel">Cancella</string>
+    <string name="notes_empty">Non hai nessuna nota</string>
+    <string name="nothing_found">Non è stato trovato nulla nelle tue note</string>
+    <string name="note_deleted_message">La nota è stata eliminata</string>
+    <string name="trash">Cestino</string>
+    <string name="there_are_no_deleted_notes">Non ci sono note eliminate</string>
+    <string name="delete_note_dialog_title">Eliminare nota permanentemente?</string>
+    <string name="delete_note_dialog_message">La nota è stata eliminata in modo permanente e non può essere recuperata</string>
+    <string name="undo">Annulla</string>
+    <string name="note_restored_message">La nota è stata ripristinata</string>
+    <string name="delete_notes_dialog_title">Elimina tutte le note permanentemente?</string>
 </resources>
