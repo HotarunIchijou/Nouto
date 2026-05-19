@@ -30,7 +30,7 @@ Nouto is a simple and elegant notes app built in Kotlin with Material 3 Expressi
 ## 🧰 Build instructions
 1. Clone this repository:
 ```
-git clone https://github.com/kaorun/nouto.git
+git clone https://github.com/HotarunIchijou/Nouto.git
 ```
 2. Open the project in Android Studio
 3. Sync Gradle files and resolve dependencies
