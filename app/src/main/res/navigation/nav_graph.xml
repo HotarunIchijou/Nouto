@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_settingsMainFragment_to_settingsAboutFragment"
             app:destination="@id/settingsAboutFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsBackupRestoreFragment"
+            app:destination="@id/settingsBackupRestoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsAppearanceFragment"
@@ -61,6 +64,11 @@
         android:id="@+id/settingsAboutFragment"
         android:name="org.kaorun.nouto.ui.fragments.settings.SettingsAboutFragment"
         android:label="SettingsAboutFragment"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/settingsBackupRestoreFragment"
+        android:name="org.kaorun.nouto.ui.fragments.settings.SettingsBackupRestoreFragment"
+        android:label="SettingsBackupRestoreFragment"
         tools:layout="@layout/fragment_settings" />
 
 </navigation>

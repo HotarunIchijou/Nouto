@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Database">
+        <Preference
+            android:key="backup"
+            android:icon="@drawable/cloud_upload_24px"
+            android:title="@string/backup_database"
+            android:summary="@string/backup_database_summary" />
+
+        <Preference
+            android:key="restore"
+            android:icon="@drawable/cloud_download_24px"
+            android:title="@string/restore_application_data"
+            android:summary="@string/restore_database_summary" />
+    </PreferenceCategory>
+</PreferenceScreen>

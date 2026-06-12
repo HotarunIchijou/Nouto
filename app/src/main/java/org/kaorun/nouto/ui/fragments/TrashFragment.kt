@@ -132,12 +132,10 @@ class TrashFragment : BaseFragment(R.layout.fragment_trash) {
         findNavController().navigate(
             TrashFragmentDirections.actionTrashFragmentToNoteFragment(noteId)
         )
-        binding.fab.hide()
     }
 
     private fun closeTrashFragment() {
         findNavController().popBackStack()
-        binding.fab.hide()
     }
 
     override fun onDestroyView() {

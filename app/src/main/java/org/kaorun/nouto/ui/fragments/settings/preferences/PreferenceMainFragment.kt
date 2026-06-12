@@ -25,6 +25,11 @@ class PreferenceMainFragment : PreferenceBaseFragment() {
                 .navigate(R.id.action_settingsMainFragment_to_settingsAppearanceFragment)
             true
         }
+        findPreference<Preference>("screen_backup_restore")?.setOnPreferenceClickListener {
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_settingsMainFragment_to_settingsBackupRestoreFragment)
+            true
+        }
         findPreference<Preference>("screen_language")?.setOnPreferenceClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
