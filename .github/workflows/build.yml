@@ -2,7 +2,7 @@ name: Android CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
     paths-ignore:
       - ".github/**"
       - "!.github/workflows/**"
@@ -12,10 +12,8 @@ on:
       - "*.md"
       - "LICENSE"
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
     paths-ignore:
-      - ".github/**"
-      - "!.github/workflows/**"
       - ".idea/"
       - "fastlane/"
       - ".gitignore"
