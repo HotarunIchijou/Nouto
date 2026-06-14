@@ -78,4 +78,6 @@
     <string name="error_occured">An error occurred</string>
     <string name="backup_database_summary">Make a local backup of notes</string>
     <string name="restore_database_summary">Restore notes from your local backup</string>
+    <string name="export">Export</string>
+    <string name="export_success">Note has been exported successfully</string>
 </resources>

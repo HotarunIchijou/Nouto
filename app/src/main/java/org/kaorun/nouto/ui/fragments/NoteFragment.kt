@@ -1,5 +1,6 @@
 package org.kaorun.nouto.ui.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
@@ -8,6 +9,8 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,7 +18,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
-import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialFade
 import com.onegravity.rteditor.RTManager
@@ -27,11 +29,14 @@ import org.kaorun.nouto.R
 import org.kaorun.nouto.data.Note
 import org.kaorun.nouto.databinding.FragmentNoteBinding
 import org.kaorun.nouto.ui.components.DeleteDialog
-import org.kaorun.nouto.ui.components.SnackbarWithUndo
+import org.kaorun.nouto.ui.components.Snackbars
 import org.kaorun.nouto.ui.components.TextStyleFloatingToolbar
 import org.kaorun.nouto.ui.fragments.base.BaseFragment
+import org.kaorun.nouto.ui.utils.FileUtils
 import org.kaorun.nouto.ui.utils.InsetsHandler
 import org.kaorun.nouto.viewmodel.NotesViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private lateinit var rtManager: RTManager
@@ -39,6 +44,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private val binding get() = _binding!!
     private val viewModel: NotesViewModel by navGraphViewModels(R.id.nav_graph)
     private val args: NoteFragmentArgs by navArgs()
+    private val filePicker = setupFilePicker()
     private var note: Note? = null
     private var isDeleting = false
     private var isSaved = false
@@ -155,6 +161,10 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                         isPinned = !isPinned
                         true
                     }
+                    R.id.export -> {
+                        exportNote()
+                        true
+                    }
                     R.id.delete -> {
                         note?.let {
                             isDeleting = true
@@ -177,7 +187,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     }
 
     private fun setupRestoreSnackbar(note: Note) {
-        SnackbarWithUndo.show(
+        Snackbars.showSnackbarWithUndo(
             view = binding.root,
             anchorView = binding.floatingToolbar,
             message = getString(R.string.note_restored_message),
@@ -192,13 +202,26 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             R.string.note_unpinned_message
         } else R.string.note_pinned_message
 
-        SnackbarWithUndo.show(
+        Snackbars.showSnackbarWithUndo(
             view = binding.root,
             anchorView = binding.floatingToolbar,
             message = getString(messageRes),
             undoAction = {
                 isPinned = !isPinned
             }
+        )
+    }
+
+    private fun setupExportSnackbar(e: String? = null) {
+        val message = e?.let {
+            "${getString(R.string.error_occured)}: $e"
+        } ?: run {
+            getString(R.string.export_success)
+        }
+        Snackbars.showSnackbarNoAction(
+            view = binding.root,
+            anchorView = binding.floatingToolbar,
+            message = message
         )
     }
 
@@ -264,19 +287,21 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         )
         InsetsHandler.applyImeInsets(binding.scrollView)
 
-        (enterTransition as? Transition)?.addListener(
-            object : Transition.TransitionListener {
-                override fun onTransitionEnd(transition: Transition) {
-                    InsetsHandler.applyImeInsets(binding.floatingToolbar)
-                }
-                override fun onTransitionStart(transition: Transition) {}
-                override fun onTransitionCancel(transition: Transition) {
-                    InsetsHandler.applyImeInsets(binding.floatingToolbar)
-                }
-                override fun onTransitionPause(transition: Transition) {}
-                override fun onTransitionResume(transition: Transition) {}
-            }
-        ) ?: InsetsHandler.applyImeInsets(binding.floatingToolbar)
+//        (enterTransition as? Transition)?.addListener(
+//            object : Transition.TransitionListener {
+//                override fun onTransitionEnd(transition: Transition) {
+//                    InsetsHandler.applyImeInsets(binding.floatingToolbar)
+//                }
+//                override fun onTransitionStart(transition: Transition) {}
+//                override fun onTransitionCancel(transition: Transition) {
+//                    InsetsHandler.applyImeInsets(binding.floatingToolbar)
+//                }
+//                override fun onTransitionPause(transition: Transition) {}
+//                override fun onTransitionResume(transition: Transition) {}
+//            }
+//        ) ?: InsetsHandler.applyImeInsets(binding.floatingToolbar)
+
+        InsetsHandler.applyImeInsets(binding.floatingToolbar)
     }
 
     private fun updateUIState(note: Note?, isShowKeyboard: Boolean) {
@@ -333,6 +358,42 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 //                override fun onTransitionResume(transition: androidx.transition.Transition) {}
 //            }
 //        )
+    }
+
+    private fun setupFilePicker(): ActivityResultLauncher<String?> = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri: Uri? ->
+        uri?.let {
+            runCatching {
+                saveNote()
+                isSaved = true
+                val title = binding.noteTitle.getText(RTFormat.HTML).orEmpty()
+                val content = binding.noteContent.getText(RTFormat.HTML).orEmpty()
+                FileUtils.writeNoteToFile(
+                    context = requireContext(),
+                    uri = uri,
+                    title = title,
+                    content = content
+                )
+            }.onSuccess {
+                setupExportSnackbar(null)
+            }.onFailure { e ->
+                setupExportSnackbar(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun exportNote() {
+        val title = binding.noteTitle.getText(RTFormat.HTML).toPlainText()
+        val defaultFileName = if (title.isNotBlank()) {
+            "${title.take(20).replace(Regex("[^a-zA-Z0-9.-]"), "_")}.json"
+        } else {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val time = LocalDateTime.now().format(formatter)
+            "$time.json"
+        }
+
+        filePicker.launch(defaultFileName)
     }
 
     private fun closeNoteFragment() {

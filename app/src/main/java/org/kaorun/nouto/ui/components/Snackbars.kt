@@ -4,8 +4,8 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import org.kaorun.nouto.R
 
-object SnackbarWithUndo {
-    fun show(
+object Snackbars {
+    fun showSnackbarWithUndo(
         view: View,
         anchorView: View?,
         message: String,
@@ -16,6 +16,16 @@ object SnackbarWithUndo {
             .setAction(R.string.undo) {
                 undoAction()
             }
+            .show()
+    }
+
+    fun showSnackbarNoAction(
+        view: View,
+        anchorView: View?,
+        message: String
+    ) {
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+            .setAnchorView(anchorView)
             .show()
     }
 }
