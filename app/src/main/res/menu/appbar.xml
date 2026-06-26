@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/export"
-        android:icon="@drawable/cloud_download_24px"
+        android:icon="@drawable/upload_24px"
         android:title="@string/export" />
 
     <item

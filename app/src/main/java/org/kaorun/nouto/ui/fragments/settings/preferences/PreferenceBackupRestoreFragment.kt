@@ -2,6 +2,7 @@ package org.kaorun.nouto.ui.fragments.settings.preferences
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -89,6 +90,8 @@ class PreferenceBackupRestoreFragment : PreferenceBaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        imageView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.illustration_backup_restore, listView, false)
         super.onViewCreated(view, savedInstanceState)
     }
 }
