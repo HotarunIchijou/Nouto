@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         ColorThemeHelper.apply(this)
         BlackThemeHelper.apply(this)
+        roomBackup = RoomBackup(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        roomBackup = RoomBackup(this)
         warnDialog = FreeDroidWarnDialog.show(this, BuildConfig.VERSION_CODE)
     }
 

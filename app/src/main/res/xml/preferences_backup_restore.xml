@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/note_entries">
+
+        <Preference
+            android:key="export"
+            android:icon="@drawable/upload_24px"
+            android:title="@string/export_note"
+            android:summary="@string/export_note_summary" />
+
+        <Preference
+            android:key="import"
+            android:icon="@drawable/download_24px"
+            android:title="@string/import_note"
+            android:summary="@string/import_note_summary" />
+    </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Database">
+        android:title="@string/application_data">
+
         <Preference
             android:key="backup"
             android:icon="@drawable/cloud_upload_24px"

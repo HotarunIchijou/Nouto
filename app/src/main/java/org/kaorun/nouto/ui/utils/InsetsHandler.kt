@@ -13,18 +13,30 @@ object InsetsHandler {
         view: View,
         isTopPaddingEnabled: Boolean = true,
         isBottomPaddingEnabled: Boolean = true,
-        additionalMargin: Int? = null) {
+        isHorizontalPaddingEnabled: Boolean = true,
+        isAdditionalTopPaddingEnabled: Boolean = false,
+        isAdditionalBottomPaddingEnabled: Boolean = true,
+        isAdditionalHorizontalPaddingEnabled: Boolean = false,
+        isTopSystemPaddingEnabled: Boolean = true,
+        additionalPadding: Int = 0) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or
                         WindowInsetsCompat.Type.displayCutout()
             )
-            val margin = additionalMargin ?: 0
+            
+            val topPadding = (if (isTopSystemPaddingEnabled) systemBars.top else 0) +
+                    (if (isAdditionalTopPaddingEnabled) additionalPadding else 0)
+            val bottomPadding = if (isAdditionalBottomPaddingEnabled) additionalPadding else 0
+            val horizontalPadding = if (isAdditionalHorizontalPaddingEnabled) additionalPadding else 0
+
             v.setPadding(
-                systemBars.left,
-                if (isTopPaddingEnabled) systemBars.top else 0,
-                systemBars.right,
-                if (isBottomPaddingEnabled) systemBars.bottom + margin  else 0
+                if (isHorizontalPaddingEnabled) systemBars.left + horizontalPadding
+                else 0,
+                if (isTopPaddingEnabled) topPadding else 0,
+                if (isHorizontalPaddingEnabled) systemBars.right + horizontalPadding
+                else 0,
+                if (isBottomPaddingEnabled) systemBars.bottom + bottomPadding else 0
             )
             insets
         }
@@ -54,21 +66,6 @@ object InsetsHandler {
                 var startBottom = 0f
                 var endBottom = 0f
 
-//                override fun onPrepare(
-//                    animation: WindowInsetsAnimationCompat
-//                ) {
-//                    startBottom = view.bottom.toFloat()
-//                }
-//
-//                override fun onStart(
-//                    animation: WindowInsetsAnimationCompat,
-//                    bounds: WindowInsetsAnimationCompat.BoundsCompat
-//                ): WindowInsetsAnimationCompat.BoundsCompat {
-//                    endBottom = view.bottom.toFloat()
-//
-//                    return bounds
-//                }
-
                 override fun onPrepare(animation: WindowInsetsAnimationCompat) {
                     startBottom = view.bottom.toFloat()
                 }
@@ -94,20 +91,6 @@ object InsetsHandler {
 
                     return insets
                 }
-
-//                override fun onProgress(
-//                    insets: WindowInsetsCompat,
-//                    runningAnimations: MutableList<WindowInsetsAnimationCompat>
-//                ): WindowInsetsCompat {
-//                    val imeAnimation = runningAnimations.find {
-//                        it.typeMask and WindowInsetsCompat.Type.ime() != 0
-//                    } ?: return insets
-//
-//                    view.translationY =
-//                        (startBottom - endBottom) * (1 - imeAnimation.interpolatedFraction)
-//
-//                    return insets
-//                }
             }
         )
     }

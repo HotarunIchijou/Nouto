@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -35,8 +36,6 @@ import org.kaorun.nouto.ui.fragments.base.BaseFragment
 import org.kaorun.nouto.ui.utils.FileUtils
 import org.kaorun.nouto.ui.utils.InsetsHandler
 import org.kaorun.nouto.viewmodel.NotesViewModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private lateinit var rtManager: RTManager
@@ -50,6 +49,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private var isSaved = false
     private var isRestoring = false
     private var isPinned = false
+    private var isImporting = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,9 +95,16 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 }
             }
         } else {
-            binding.noteTitle.setRichTextEditing(true, null)
-            binding.noteContent.setRichTextEditing(true, null)
-            updateUIState(null, true)
+            if (args.title != null || args.content != null) {
+                isImporting = true
+                binding.noteTitle.setRichTextEditing(true, args.title)
+                binding.noteContent.setRichTextEditing(true, args.content)
+                updateUIState(null, false)
+            } else {
+                binding.noteTitle.setRichTextEditing(true, null)
+                binding.noteContent.setRichTextEditing(true, null)
+                updateUIState(null, true)
+            }
         }
     }
 
@@ -136,6 +143,16 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             binding.floatingToolbar.isVisible = true
             viewModel.unmarkDeleted(note!!)
             setupRestoreSnackbar(note!!)
+        }
+
+        binding.buttonBack.setOnClickListener {
+            closeNoteFragment()
+        }
+
+        binding.buttonImport.setOnClickListener {
+            isImporting = false
+            setupImportSnackbar()
+            closeNoteFragment()
         }
 
         binding.buttonMenu.setOnClickListener { view ->
@@ -225,6 +242,15 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         )
     }
 
+    private fun setupImportSnackbar() {
+        val activityView = requireActivity().findViewById<View>(android.R.id.content)
+        Snackbars.showSnackbarNoAction(
+            view = activityView,
+            anchorView = null,
+            message = getString(R.string.note_imported_message)
+        )
+    }
+
     private fun setupChangeListener() {
         val isChanged = {
             (binding.noteTitle.getText(RTFormat.HTML).orEmpty() != (note?.title ?: "") &&
@@ -283,7 +309,18 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             view = binding.noteContent,
             isTopPaddingEnabled = false,
             isBottomPaddingEnabled = true,
-            additionalMargin = resources.getDimensionPixelSize(R.dimen.note_container_bottom_margin)
+            isHorizontalPaddingEnabled = false,
+            additionalPadding = resources.getDimensionPixelSize(R.dimen.note_container_bottom_margin)
+        )
+        InsetsHandler.applyViewInsets(
+            view = binding.buttonGroupImport,
+            isTopPaddingEnabled = true,
+            isBottomPaddingEnabled = true,
+            isHorizontalPaddingEnabled = true,
+            isAdditionalTopPaddingEnabled = true,
+            isAdditionalHorizontalPaddingEnabled = true,
+            isTopSystemPaddingEnabled = false,
+            additionalPadding = resources.getDimensionPixelSize(R.dimen.button_group_import_padding)
         )
         InsetsHandler.applyImeInsets(binding.scrollView)
 
@@ -310,12 +347,41 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
         else false
 
-        binding.floatingToolbar.isVisible = !isDeleted
-        binding.buttonGroupMenu.isVisible = !isDeleted
-        binding.buttonGroup.isVisible = isDeleted
-        binding.noteTitle.isEnabled = !isDeleted
-        binding.noteContent.isEnabled = !isDeleted
         if (!isDeleted && isShowKeyboard) showKeyboard()
+        binding.buttonMenu.isVisible = !isImporting
+        binding.floatingToolbar.isVisible = !isImporting
+
+        if (isImporting) {
+            listOf(binding.noteTitle, binding.noteContent).forEach {
+                it.isFocusable = false
+                it.isClickable = false
+                it.isCursorVisible = false
+            }
+
+            if (args.title.isNullOrBlank()) binding.noteTitle.hint =
+                getString(R.string.empty_title)
+            if (args.content.isNullOrBlank()) binding.noteContent.hint =
+                getString(R.string.empty_content)
+
+            binding.buttonGroupImport.isVisible = true
+
+            binding.topAppBar.navigationIcon = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.close_24px
+            )
+        }
+
+        if (isDeleted || isImporting) {
+            listOf(binding.floatingToolbar, binding.buttonGroup, binding.buttonGroupMenu).forEach {
+                it.isVisible = false
+            }
+        }
+
+        if (isDeleted) {
+            listOf(binding.noteTitle, binding.noteContent).forEach {
+                it.isEnabled = false
+            }
+        }
         //binding.noteTitle.isFocusable = !isDeleted
         //binding.noteContent.isFocusable = !isDeleted
     }
@@ -345,37 +411,24 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         binding.noteTitle.requestFocus()
         WindowCompat.getInsetsController(requireActivity().window, binding.noteTitle)
             .show(WindowInsetsCompat.Type.ime())
-//        (enterTransition as? androidx.transition.Transition)?.addListener(
-//            object : androidx.transition.Transition.TransitionListener {
-//                override fun onTransitionEnd(transition: androidx.transition.Transition) {
-//                    binding.noteTitle.requestFocus()
-//                    WindowCompat.getInsetsController(requireActivity().window, binding.noteTitle)
-//                        .show(WindowInsetsCompat.Type.ime())
-//                }
-//                override fun onTransitionStart(transition: androidx.transition.Transition) {}
-//                override fun onTransitionCancel(transition: androidx.transition.Transition) {}
-//                override fun onTransitionPause(transition: androidx.transition.Transition) {}
-//                override fun onTransitionResume(transition: androidx.transition.Transition) {}
-//            }
-//        )
     }
 
     private fun setupFilePicker(): ActivityResultLauncher<String?> = registerForActivityResult(
         ActivityResultContracts.CreateDocument("application/json")
     ) { uri: Uri? ->
         uri?.let {
-            runCatching {
-                saveNote()
-                isSaved = true
-                val title = binding.noteTitle.getText(RTFormat.HTML).orEmpty()
-                val content = binding.noteContent.getText(RTFormat.HTML).orEmpty()
-                FileUtils.writeNoteToFile(
-                    context = requireContext(),
-                    uri = uri,
-                    title = title,
-                    content = content
-                )
-            }.onSuccess {
+            saveNote()
+            isSaved = true
+
+            val title = binding.noteTitle.getText(RTFormat.HTML).orEmpty()
+            val content = binding.noteContent.getText(RTFormat.HTML).orEmpty()
+
+            FileUtils.writeNoteToFile(
+                context = requireContext(),
+                uri = it,
+                title = title,
+                content = content
+            ).onSuccess {
                 setupExportSnackbar(null)
             }.onFailure { e ->
                 setupExportSnackbar(e.localizedMessage)
@@ -385,12 +438,11 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
     private fun exportNote() {
         val title = binding.noteTitle.getText(RTFormat.HTML).toPlainText()
+        val content = binding.noteContent.getText(RTFormat.HTML).toPlainText()
         val defaultFileName = if (title.isNotBlank()) {
-            "${title.take(20).replace(Regex("[^a-zA-Z0-9.-]"), "_")}.json"
+            "${title.take(20)}.json"
         } else {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val time = LocalDateTime.now().format(formatter)
-            "$time.json"
+            "${content.take(20)}.json"
         }
 
         filePicker.launch(defaultFileName)
@@ -407,7 +459,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
     override fun onStop() {
         super.onStop()
-        if (!isDeleting && !isSaved) {
+        if (!isDeleting && !isImporting && !isSaved) {
             saveNote()
             isSaved = true
         }

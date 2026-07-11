@@ -80,4 +80,16 @@
     <string name="restore_database_summary">Restore notes from your local backup</string>
     <string name="export">Export</string>
     <string name="export_success">Note has been exported successfully</string>
+    <string name="application_data">Application data</string>
+    <string name="note_entries">Note entries</string>
+    <string name="export_note">Export note</string>
+    <string name="export_note_summary">Export a single note onto your device</string>
+    <string name="import_note">Import note</string>
+    <string name="import_note_summary">Import note from your device</string>
+    <string name="back">Back</string>
+    <string name="import_button">Import</string>
+    <string name="empty_title">Empty title</string>
+    <string name="empty_content">Empty content</string>
+    <string name="note_imported_message">Note has been imported successfully</string>
+    <string name="backup_restore_description">Backup and restore your notes. All backups are stored locally on your device</string>
 </resources>

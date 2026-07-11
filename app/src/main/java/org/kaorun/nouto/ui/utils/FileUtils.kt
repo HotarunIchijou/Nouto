@@ -10,21 +10,42 @@ object FileUtils {
         uri: Uri,
         title: String?,
         content: String?
-    ) {
-        val jsonObject = JSONObject().apply {
-            put("title", title ?: "")
-            put("content", content ?: "")
-        }
-        val data = jsonObject.toString(4)
+    ): Result<Unit> {
+        return runCatching {
+            val outputStream = context.contentResolver.openOutputStream(uri)
+                ?: throw NullPointerException()
 
-        try {
-            context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                outputStream.bufferedWriter().use { writer ->
-                    writer.write(data)
+            outputStream.use { stream ->
+                stream.bufferedWriter().use { writer ->
+                    val jsonObject = JSONObject().apply {
+                        put("title", title ?: "")
+                        put("content", content ?: "")
+                    }
+                    writer.write(jsonObject.toString())
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        }
+    }
+
+    fun readFromFile(
+        context: Context,
+        uri: Uri
+    ): Result<Pair<String, String>> {
+        return runCatching {
+           val inputStream = context.contentResolver.openInputStream(uri)
+               ?: throw NullPointerException()
+
+           inputStream.use { stream ->
+               stream.bufferedReader().use { reader ->
+                   val jsonString = reader.readText()
+                   val jsonObject = JSONObject(jsonString)
+
+                   val title = jsonObject.optString("title", "")
+                   val content = jsonObject.optString("content", "")
+
+                   Pair(title, content)
+               }
+           }
         }
     }
 }

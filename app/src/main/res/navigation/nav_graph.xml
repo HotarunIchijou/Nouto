@@ -30,6 +30,16 @@
             android:name="note_id"
             app:argType="integer"
             android:defaultValue="-1" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="content"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/settingsMainFragment"
@@ -69,6 +79,18 @@
         android:id="@+id/settingsBackupRestoreFragment"
         android:name="org.kaorun.nouto.ui.fragments.settings.SettingsBackupRestoreFragment"
         android:label="SettingsBackupRestoreFragment"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsBackupRestoreFragment_to_noteFragment"
+            app:destination="@id/noteFragment" />
+        <action
+            android:id="@+id/action_settingsBackupRestoreFragment_to_noteExportFragment"
+            app:destination="@id/noteExportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteExportFragment"
+        android:name="org.kaorun.nouto.ui.fragments.settings.SettingsNoteExportFragment"
+        android:label="NoteExportFragment"
+        tools:layout="@layout/fragment_note_export" />
 
 </navigation>
