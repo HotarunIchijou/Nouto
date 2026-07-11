@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import org.kaorun.nouto.R
 import org.kaorun.nouto.databinding.FragmentNoteExportBinding
@@ -56,6 +57,10 @@ class SettingsNoteExportFragment: BaseFragment(R.layout.fragment_note_export) {
         setupRecyclerView()
         observeNotes()
         setupInsets()
+
+        binding.topAppBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun observeNotes() {
