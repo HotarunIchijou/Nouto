@@ -28,4 +28,15 @@
             android:summary="@string/dynamic_colors_summary"
             android:defaultValue="true" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/note_editor">
+
+        <org.kaorun.nouto.ui.components.MaterialSwitchPreferenceCompat
+            android:key="show_keyboard"
+            android:icon="@drawable/keyboard_alt_24px"
+            android:title="Show keyboard"
+            android:summary="Automatically show keyboard when opening note"
+            android:defaultValue="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

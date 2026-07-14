@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import androidx.preference.PreferenceManager
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialFade
 import com.onegravity.rteditor.RTManager
@@ -347,7 +348,11 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
         else false
 
-        if (!isDeleted && isShowKeyboard) showKeyboard()
+        val isShowKeyboardPreference = PreferenceManager
+            .getDefaultSharedPreferences(requireContext())
+            .getBoolean("is_show_keyboard", true)
+
+        if (!isDeleted && isShowKeyboard && isShowKeyboardPreference) showKeyboard()
         binding.buttonMenu.isVisible = !isImporting
         binding.floatingToolbar.isVisible = !isImporting
 

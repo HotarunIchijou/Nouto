@@ -92,4 +92,5 @@
     <string name="empty_content">Empty content</string>
     <string name="note_imported_message">Note has been imported successfully</string>
     <string name="backup_restore_description">Backup and restore your notes. All backups are stored locally on your device</string>
+    <string name="note_editor">Note editor</string>
 </resources>
