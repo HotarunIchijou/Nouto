@@ -85,6 +85,10 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         val noteId = args.noteId
 
         if (noteId != -1) {
+            val isInViewOnlyMode = PreferenceManager
+                .getDefaultSharedPreferences(requireContext())
+                .getBoolean("is_view_only_mode", false)
+
             viewModel.getNote(noteId).observe(viewLifecycleOwner) { existingNote ->
                 existingNote?.let {
                     note = it
@@ -92,7 +96,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                     binding.noteContent.setRichTextEditing(true, it.content)
                     binding.noteTitle.setSelection(binding.noteTitle.text?.length ?: 0)
                     isPinned = it.isPinned
-                    updateUIState(note, !isRestoring)
+                    updateUIState(note, !isRestoring, isInViewOnlyMode)
                 }
             }
         } else {
@@ -122,6 +126,18 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
     private fun setupListeners() {
         setupChangeListener()
+
+        binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            with(binding.buttonEditNote) {
+                if (isExtended && scrollY > oldScrollY) shrink()
+                if (!isExtended && scrollY < oldScrollY) extend()
+                if (scrollY == 0) extend()
+            }
+        }
+
+        binding.buttonEditNote.setOnClickListener {
+            updateUIState(note, isShowKeyboard = true, isInViewOnlyMode = false)
+        }
 
         binding.buttonSave.setOnClickListener {
             closeNoteFragment()
@@ -323,6 +339,11 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             isTopSystemPaddingEnabled = false,
             additionalPadding = resources.getDimensionPixelSize(R.dimen.button_group_import_padding)
         )
+        InsetsHandler.applyViewInsets(
+            binding.buttonEditNote,
+            resources.getDimensionPixelSize(R.dimen.fab_margin)
+        )
+        InsetsHandler.applyImeInsets(binding.buttonEditNote)
         InsetsHandler.applyImeInsets(binding.scrollView)
 
 //        (enterTransition as? Transition)?.addListener(
@@ -342,17 +363,16 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         InsetsHandler.applyImeInsets(binding.floatingToolbar)
     }
 
-    private fun updateUIState(note: Note?, isShowKeyboard: Boolean) {
+    private fun updateUIState(
+        note: Note?,
+        isShowKeyboard: Boolean,
+        isInViewOnlyMode: Boolean = false
+    ) {
         val isDeleted = if (!isDeleting) {
             note?.isDeleted ?: false
         }
         else false
 
-        val isShowKeyboardPreference = PreferenceManager
-            .getDefaultSharedPreferences(requireContext())
-            .getBoolean("is_show_keyboard", true)
-
-        if (!isDeleted && isShowKeyboard && isShowKeyboardPreference) showKeyboard()
         binding.buttonMenu.isVisible = !isImporting
         binding.floatingToolbar.isVisible = !isImporting
 
@@ -387,8 +407,26 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 it.isEnabled = false
             }
         }
-        //binding.noteTitle.isFocusable = !isDeleted
-        //binding.noteContent.isFocusable = !isDeleted
+
+        if (!isInViewOnlyMode && binding.buttonEditNote.isVisible) {
+            binding.buttonEditNote.shrink()
+            binding.buttonEditNote.hide()
+        }
+        listOf(binding.noteTitle, binding.noteContent).forEach {
+            it.isFocusable = !isInViewOnlyMode
+            it.isFocusableInTouchMode = !isInViewOnlyMode
+            it.isClickable = !isInViewOnlyMode
+            it.isCursorVisible = !isInViewOnlyMode
+        }
+        binding.floatingToolbar.isVisible = !isInViewOnlyMode
+
+        val isShowKeyboardPreference = PreferenceManager
+            .getDefaultSharedPreferences(requireContext())
+            .getBoolean("is_show_keyboard", true)
+
+        if (!isDeleted && isShowKeyboard && isShowKeyboardPreference && !isInViewOnlyMode) {
+            showKeyboard()
+        }
     }
 
     private fun saveNote() {

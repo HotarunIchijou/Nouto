@@ -55,6 +55,14 @@ class PreferenceAppearanceFragment : PreferenceBaseFragment() {
                 true
             }
 
+        findPreference<SwitchPreferenceCompat>("view_only_mode")
+            ?.setOnPreferenceChangeListener {_, newValue ->
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                    putBoolean("is_view_only_mode", newValue as Boolean)
+                }
+                true
+            }
+
         findPreference<SwitchPreferenceCompat>("show_keyboard")
             ?.setOnPreferenceChangeListener { _, newValue ->
                 PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {

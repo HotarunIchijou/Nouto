@@ -33,10 +33,17 @@
         android:title="@string/note_editor">
 
         <org.kaorun.nouto.ui.components.MaterialSwitchPreferenceCompat
+            android:key="view_only_mode"
+            android:icon="@drawable/visibility_24px"
+            android:title="@string/view_only_mode"
+            android:summary="@string/view_only_mode_summary"
+            android:defaultValue="false" />
+
+        <org.kaorun.nouto.ui.components.MaterialSwitchPreferenceCompat
             android:key="show_keyboard"
             android:icon="@drawable/keyboard_alt_24px"
-            android:title="Show keyboard"
-            android:summary="Automatically show keyboard when opening note"
+            android:title="@string/show_keyboard"
+            android:summary="@string/show_keyboard_summary"
             android:defaultValue="true" />
     </PreferenceCategory>
 </PreferenceScreen>
