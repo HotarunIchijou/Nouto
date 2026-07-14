@@ -373,29 +373,6 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
         else false
 
-        binding.buttonMenu.isVisible = !isImporting
-        binding.floatingToolbar.isVisible = !isImporting
-
-        if (isImporting) {
-            listOf(binding.noteTitle, binding.noteContent).forEach {
-                it.isFocusable = false
-                it.isClickable = false
-                it.isCursorVisible = false
-            }
-
-            if (args.title.isNullOrBlank()) binding.noteTitle.hint =
-                getString(R.string.empty_title)
-            if (args.content.isNullOrBlank()) binding.noteContent.hint =
-                getString(R.string.empty_content)
-
-            binding.buttonGroupImport.isVisible = true
-
-            binding.topAppBar.navigationIcon = ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.close_24px
-            )
-        }
-
         if (isDeleted || isImporting) {
             listOf(binding.floatingToolbar, binding.buttonGroup, binding.buttonGroupMenu).forEach {
                 it.isVisible = false
@@ -426,6 +403,29 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
         if (!isDeleted && isShowKeyboard && isShowKeyboardPreference && !isInViewOnlyMode) {
             showKeyboard()
+        }
+
+        binding.buttonMenu.isVisible = !isImporting
+        binding.floatingToolbar.isVisible = !isImporting
+
+        if (isImporting) {
+            listOf(binding.noteTitle, binding.noteContent).forEach {
+                it.isFocusable = false
+                it.isClickable = false
+                it.isCursorVisible = false
+            }
+
+            if (args.title.isNullOrBlank()) binding.noteTitle.hint =
+                getString(R.string.empty_title)
+            if (args.content.isNullOrBlank()) binding.noteContent.hint =
+                getString(R.string.empty_content)
+
+            binding.buttonGroupImport.isVisible = true
+
+            binding.topAppBar.navigationIcon = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.close_24px
+            )
         }
     }
 
