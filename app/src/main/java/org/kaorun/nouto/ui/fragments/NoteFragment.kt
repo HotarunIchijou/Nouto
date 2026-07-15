@@ -368,67 +368,56 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         isShowKeyboard: Boolean,
         isInViewOnlyMode: Boolean = false
     ) {
-        val isDeleted = if (!isDeleting) {
-            note?.isDeleted ?: false
-        }
-        else false
+        val isDeleted = !isDeleting && (note?.isDeleted ?: false)
+        val isEditable = !isInViewOnlyMode && !isImporting && !isDeleted
 
-        if (isDeleted || isImporting) {
-            listOf(binding.floatingToolbar, binding.buttonGroup, binding.buttonGroupMenu).forEach {
-                it.isVisible = false
-            }
-        }
-
-        if (isDeleted) {
-            listOf(binding.noteTitle, binding.noteContent).forEach {
-                it.isEnabled = false
-            }
+        listOf(binding.noteTitle, binding.noteContent).forEach {
+            it.isEnabled = !isDeleted
+            it.isFocusable = isEditable
+            it.isFocusableInTouchMode = isEditable
+            it.isClickable = isEditable
+            it.isCursorVisible = isEditable
         }
 
-        if (!isInViewOnlyMode && binding.buttonEditNote.isVisible) {
+        binding.buttonEditNote.isVisible = !isDeleted && !isImporting
+        binding.buttonMenu.isVisible = !isImporting && !isDeleted
+        binding.floatingToolbar.isVisible = isEditable
+        binding.buttonGroup.isVisible = isDeleted && !isImporting
+        binding.buttonGroupMenu.isVisible = !isDeleted && !isImporting
+
+        if (isEditable) {
             binding.buttonEditNote.shrink()
             binding.buttonEditNote.hide()
         }
-        listOf(binding.noteTitle, binding.noteContent).forEach {
-            it.isFocusable = !isInViewOnlyMode
-            it.isFocusableInTouchMode = !isInViewOnlyMode
-            it.isClickable = !isInViewOnlyMode
-            it.isCursorVisible = !isInViewOnlyMode
-        }
-        binding.floatingToolbar.isVisible = !isInViewOnlyMode
 
         val isShowKeyboardPreference = PreferenceManager
             .getDefaultSharedPreferences(requireContext())
             .getBoolean("is_show_keyboard", true)
 
-        if (!isDeleted && isShowKeyboard && isShowKeyboardPreference && !isInViewOnlyMode) {
+        if (isEditable && isShowKeyboard && isShowKeyboardPreference) {
             showKeyboard()
         }
 
-        binding.buttonMenu.isVisible = !isImporting
-        binding.floatingToolbar.isVisible = !isImporting
-
         if (isImporting) {
-            listOf(binding.noteTitle, binding.noteContent).forEach {
-                it.isFocusable = false
-                it.isClickable = false
-                it.isCursorVisible = false
+            if (args.title.isNullOrBlank()) {
+                binding.noteTitle.hint = getString(R.string.empty_title)
             }
-
-            if (args.title.isNullOrBlank()) binding.noteTitle.hint =
-                getString(R.string.empty_title)
-            if (args.content.isNullOrBlank()) binding.noteContent.hint =
-                getString(R.string.empty_content)
-
+            if (args.content.isNullOrBlank()) {
+                binding.noteContent.hint = getString(R.string.empty_content)
+            }
             binding.buttonGroupImport.isVisible = true
-
             binding.topAppBar.navigationIcon = ContextCompat.getDrawable(
                 requireContext(),
                 R.drawable.close_24px
             )
+        } else {
+            binding.buttonGroupImport.isVisible = false
+            binding.topAppBar.navigationIcon = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.arrow_back_24px
+            )
         }
     }
-
     private fun saveNote() {
         val htmlTitle = binding.noteTitle.getText(RTFormat.HTML)
         val htmlContent = binding.noteContent.getText(RTFormat.HTML)
