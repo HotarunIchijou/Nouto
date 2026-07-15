@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="28dp"
         android:textAppearance="?attr/textAppearanceTitleLargeEmphasized"
         android:textFontWeight="500"
         android:fontFamily="@font/google_sans_flex_round"
