@@ -21,12 +21,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.TransitionManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.sidesheet.SideSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import org.kaorun.nouto.R
 import org.kaorun.nouto.data.Note
 import org.kaorun.nouto.databinding.FragmentMainBinding
 import org.kaorun.nouto.ui.adapter.NoteAdapter
 import org.kaorun.nouto.ui.components.MainSearchView
-import org.kaorun.nouto.ui.components.SnackbarWithUndo
+import org.kaorun.nouto.ui.components.Snackbars
 import org.kaorun.nouto.ui.fragments.base.BaseFragment
 import org.kaorun.nouto.ui.model.LayoutMode
 import org.kaorun.nouto.ui.utils.InsetsHandler
@@ -52,12 +53,28 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        showRestoreSnackbar()
+        observeNotes()
         setupRecyclerView()
         setupLayoutMode()
-        observeNotes()
         setupSearchView()
         setupListeners()
         setupInsets()
+    }
+
+    private fun showRestoreSnackbar() {
+        val intent = requireActivity().intent
+        if (intent.getBooleanExtra("restore_success", false)) {
+            Snackbar
+                .make(
+                    binding.root,
+                    getString(R.string.restore_database_success),
+                    Snackbar.LENGTH_SHORT
+                )
+                .setAnchorView(binding.fab)
+                .show()
+            intent.removeExtra("restore_success")
+        }
     }
 
     private fun observeNotes() {
@@ -221,7 +238,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
     private fun setupSnackbar(note: Note) {
        viewModel.markDeleted(note)
-        SnackbarWithUndo.show(
+        Snackbars.showSnackbarWithUndo(
             view = binding.root,
             anchorView = binding.fab,
             message = getString(R.string.note_deleted_message),
@@ -243,7 +260,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToTrashFragment()
         )
-        binding.fab.hide()
     }
 
     private fun openSettingsFragment() {
@@ -251,7 +267,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToSettingsMainFragment()
         )
-        binding.fab.hide()
     }
 
     private fun setupLayoutMode() {

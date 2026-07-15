@@ -16,6 +16,7 @@ import org.kaorun.nouto.ui.utils.InsetsHandler
 import org.kaorun.nouto.ui.utils.MarginItemDecoration
 
 abstract class PreferenceBaseFragment : PreferenceFragmentCompat() {
+    var textView: View? = null
     var imageView: View? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,10 +31,12 @@ abstract class PreferenceBaseFragment : PreferenceFragmentCompat() {
         ))
         val segmentedPreferenceAdapter = SegmentedPreferenceAdapter(adapter)
 
-        listView.adapter = imageView?.let { imageView ->
-            val adapter = ImageViewAdapter(imageView)
-            ConcatAdapter(adapter, segmentedPreferenceAdapter)
-        } ?: segmentedPreferenceAdapter
+        val adapters = listOfNotNull(
+            textView?.let { SingleViewAdapter(it) },
+            imageView?.let { SingleViewAdapter(it) },
+            segmentedPreferenceAdapter
+        )
+        listView.adapter = if (adapters.size == 1) adapters[0] else ConcatAdapter(adapters)
 
         InsetsHandler.applyViewInsets(listView, false)
     }
@@ -68,27 +71,37 @@ abstract class PreferenceBaseFragment : PreferenceFragmentCompat() {
         override fun getItemViewType(position: Int) = adapter.getItemViewType(position)
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             adapter.createViewHolder(parent, viewType)
+
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             adapter.bindViewHolder(holder, position)
             val view = holder.itemView as? ListItemLayout ?: return
-            view.updateAppearance(preferencePosition(position), preferenceItemCount())
+
+            val (start, end) = segmentBounds(position)
+            view.updateAppearance(position - start, end - start + 1)
         }
 
-        private fun isPreference(position: Int) = adapter.createViewHolder(
-            listView,
-            adapter.getItemViewType(position)
-        ).itemView is ListItemLayout
+        private val viewTypeIsPreferenceCache = mutableMapOf<Int, Boolean>()
 
-        private fun preferencePosition(position: Int) = (0 until position).count {
-            isPreference(it)
+        private fun isPreference(position: Int): Boolean {
+            val viewType = adapter.getItemViewType(position)
+            return viewTypeIsPreferenceCache.getOrPut(viewType) {
+                adapter.createViewHolder(listView, viewType).itemView is ListItemLayout
+            }
         }
 
-        private fun preferenceItemCount() = (0 until adapter.itemCount).count {
-            isPreference(it)
+        private fun segmentBounds(position: Int): Pair<Int, Int> {
+            var start = position
+            while (start > 0 && isPreference(start - 1)) start--
+
+            var end = position
+            val lastIndex = adapter.itemCount - 1
+            while (end < lastIndex && isPreference(end + 1)) end++
+
+            return start to end
         }
     }
 
-    class ImageViewAdapter(
+    class SingleViewAdapter(
         private val view: View
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun getItemCount() = 1

@@ -66,4 +66,36 @@
     <string name="dialog_keepandroidopen_solution">Solution</string>
     <string name="dialog_keepandroidopen_solution_uri" translatable="false">https://github.com/woheller69/FreeDroidWarn?tab=readme-ov-file#solutions</string>
     <string name="dialog_keepandroidopen_uri" translatable="false">https://keepandroidopen.org"</string>
+    <string name="backup_database">Backup application data</string>
+    <string name="restore_application_data">Restore application data</string>
+    <string name="backup_and_restore">Backup and restore</string>
+    <string name="backup_and_restore_summary">Backup and restore database, note entries</string>
+    <string name="backup_database_success">Database backup completed successfully</string>
+    <string name="restart_app">App restart is required</string>
+    <string name="restart_app_summary">Restart the application to apply backup</string>
+    <string name="restart">Restart</string>
+    <string name="restore_database_success">App database restored successfully</string>
+    <string name="error_occured">An error occurred</string>
+    <string name="backup_database_summary">Make a local backup of notes</string>
+    <string name="restore_database_summary">Restore notes from your local backup</string>
+    <string name="export">Export</string>
+    <string name="export_success">Note has been exported successfully</string>
+    <string name="application_data">Application data</string>
+    <string name="note_entries">Note entries</string>
+    <string name="export_note">Export note</string>
+    <string name="export_note_summary">Export a single note onto your device</string>
+    <string name="import_note">Import note</string>
+    <string name="import_note_summary">Import note from your device</string>
+    <string name="back">Back</string>
+    <string name="import_button">Import</string>
+    <string name="empty_title">Empty title</string>
+    <string name="empty_content">Empty content</string>
+    <string name="note_imported_message">Note has been imported successfully</string>
+    <string name="backup_restore_description">Backup and restore your notes. All backups are stored locally on your device</string>
+    <string name="note_editor">Note editor</string>
+    <string name="edit_note">Edit note</string>
+    <string name="show_keyboard">Show keyboard</string>
+    <string name="show_keyboard_summary">Automatically show keyboard when opening note</string>
+    <string name="view_only_mode">View only mode</string>
+    <string name="view_only_mode_summary">Open existing note in view only mode</string>
 </resources>

@@ -18,7 +18,7 @@ import org.kaorun.nouto.data.Note
 import org.kaorun.nouto.databinding.FragmentTrashBinding
 import org.kaorun.nouto.ui.adapter.NoteAdapter
 import org.kaorun.nouto.ui.components.DeleteDialog
-import org.kaorun.nouto.ui.components.SnackbarWithUndo
+import org.kaorun.nouto.ui.components.Snackbars
 import org.kaorun.nouto.ui.fragments.base.BaseFragment
 import org.kaorun.nouto.ui.model.LayoutMode
 import org.kaorun.nouto.ui.utils.InsetsHandler
@@ -67,7 +67,7 @@ class TrashFragment : BaseFragment(R.layout.fragment_trash) {
             onDeleteClick = { note -> setupDeleteDialog(note) },
             onRestoreClick = { note ->
                 val anchorView = if (noteAdapter.currentList.size == 1) null else binding.fab
-                SnackbarWithUndo.show(
+                Snackbars.showSnackbarWithUndo(
                     view = binding.root,
                     anchorView = anchorView,
                     message = getString(R.string.note_restored_message),
@@ -132,12 +132,10 @@ class TrashFragment : BaseFragment(R.layout.fragment_trash) {
         findNavController().navigate(
             TrashFragmentDirections.actionTrashFragmentToNoteFragment(noteId)
         )
-        binding.fab.hide()
     }
 
     private fun closeTrashFragment() {
         findNavController().popBackStack()
-        binding.fab.hide()
     }
 
     override fun onDestroyView() {

@@ -6,7 +6,9 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.edit
 import androidx.preference.ListPreference
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import org.kaorun.nouto.R
 import org.kaorun.nouto.ui.fragments.base.PreferenceBaseFragment
@@ -50,6 +52,22 @@ class PreferenceAppearanceFragment : PreferenceBaseFragment() {
                     },
                     animationTime
                 )
+                true
+            }
+
+        findPreference<SwitchPreferenceCompat>("view_only_mode")
+            ?.setOnPreferenceChangeListener {_, newValue ->
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                    putBoolean("is_view_only_mode", newValue as Boolean)
+                }
+                true
+            }
+
+        findPreference<SwitchPreferenceCompat>("show_keyboard")
+            ?.setOnPreferenceChangeListener { _, newValue ->
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                    putBoolean("is_show_keyboard", newValue as Boolean)
+                }
                 true
             }
     }

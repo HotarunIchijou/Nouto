@@ -7,6 +7,12 @@
         android:summary="@string/appearance_summary" />
 
     <Preference
+        android:key="screen_backup_restore"
+        android:icon="@drawable/settings_backup_restore_24px"
+        android:title="@string/backup_and_restore"
+        android:summary="@string/backup_and_restore_summary" />
+
+    <Preference
         android:key="screen_language"
         android:icon="@drawable/language_24px"
         android:title="@string/language"

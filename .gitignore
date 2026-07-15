@@ -19,3 +19,5 @@ local.properties
 /app/release
 /.idea/codeStyles
 /.idea/dictionaries
+/.project
+/.settings/org.eclipse.buildship.core.prefs
