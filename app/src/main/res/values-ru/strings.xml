@@ -62,4 +62,5 @@
     <string name="dialog_keepandroidopen_warning">Google объявила, что начиная с 2026/2027 года все приложения на сертифицированных устройствах Android будут требовать от разработчиков предоставления своих личных данных для идентификации напрямую Google. Так как разработчики этого приложения не согласны с этим требованием, приложение перестанет работать на сертифицированных устройствах Android после этого времени.</string>
     <string name="dialog_keepandroidopen_more_info">Подробнее</string>
     <string name="dialog_keepandroidopen_solution">Решение</string>
+    <string name="backup_database">Резервная копия данных</string>
 </resources>
