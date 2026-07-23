@@ -1,6 +1,6 @@
 • Ability to back up and restore your notes database.
 • Support for exporting and importing note entries
 • View-only mode for notes
-• option to enable/disable automatic keyboard opening
+• Option to enable/disable automatic keyboard opening
 • Updated empty-list and backup/restore illustrations, plus refreshed colors
 • Various fixes and stability improvements
