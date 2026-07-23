@@ -2,7 +2,7 @@
 
 [![Release](https://img.shields.io/github/v/release/HotarunIchijou/Nouto?display_name=tag&style=for-the-badge)](https://github.com/HotarunIchijou/Nouto/releases/latest)
 [![Build](https://img.shields.io/github/actions/workflow/status/HotarunIchijou/nouto/build.yml?branch=master&style=for-the-badge)](https://github.com/HotarunIchijou/Nouto/actions)
-[![License](https://img.shields.io/github/license/HotarunIchijou/Nouto?style=for-the-badge)](/LICENSE)
+[![License](https://img.shields.io/github/license/HotarunIchijou/Nouto?style=for-the-badge&label=license)](/LICENSE)
 
 
 Nouto is a simple and elegant notes app built in Kotlin with Material 3 Expressive Design. It focuses heavily on user experience — fluid transitions, intuitive gestures, and a clean interface that stays out of your way.
