@@ -1,0 +1,15 @@
+<b>🚀 Features & Additions</b>
+<ul>
+    <li><b>Backup & Restore:</b> Added ability to back up and restore your notes database</li>
+    <li><b>Export/Import:</b> Added support for exporting and importing note entries</li>
+    <li><b>View-Only Mode:</b> Added a view-only mode for notes</li>
+    <li><b>Keyboard Toggle:</b> Added option to enable/disable automatic keyboard opening</li>
+    <li><b>Illustrations:</b> Updated empty-list and backup/restore illustrations, plus refreshed colors</li>
+    <li><b>Localizations:</b> Added Spanish and Italian translations, updated Hindi, Russian, and Estonian</li>
+</ul>
+<b>🐛 Fixes & Improvements</b>
+<ul>
+    <li><b>Navigation Fix:</b> Added missing listener for the navigation icon</li>
+    <li><b>Visibility Fixes:</b> Resolved various visibility issues</li>
+    <li>Various other fixes and stability improvements</li>
+</ul>
