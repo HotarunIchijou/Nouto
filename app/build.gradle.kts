@@ -43,6 +43,11 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+
+    configurations.all {
+        exclude(group = "io.opencensus", module = "opencensus-api")
+        exclude(group = "io.opencensus", module = "opencensus-proto")
+    }
 }
 
 dependencies {
