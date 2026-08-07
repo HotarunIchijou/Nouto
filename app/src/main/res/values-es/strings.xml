@@ -61,4 +61,5 @@
     <string name="italic_style_description">Estilo cursivo</string>
     <string name="underline_style_description">Estilo subrayado</string>
     <string name="navigation_drawer_description">Barra de navegación</string>
+    <string name="restart">Reanudar</string>
 </resources>
