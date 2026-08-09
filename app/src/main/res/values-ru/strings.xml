@@ -77,7 +77,7 @@
     <string name="export">Экспорт</string>
     <string name="export_success">Заметка была успешно экспортирована</string>
     <string name="application_data">Данные приложения</string>
-    <string name="note_entries">Записи заметок</string>
+    <string name="note_entries">Отдельные заметки</string>
     <string name="export_note">Экспортировать заметку</string>
     <string name="export_note_summary">Экспортировать заметку на ваше устройство</string>
     <string name="import_note">Импортировать заметку</string>
