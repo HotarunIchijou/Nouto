@@ -95,4 +95,7 @@
     <string name="view_only_mode">Режим просмотра</string>
     <string name="view_only_mode_summary">Открывать существующую заметку в режиме просмотра</string>
     <string name="system_default">Как в системе</string>
+    <string name="delete_permanently">Удалить навсегда</string>
+    <string name="focus_on_content">Фокус на контенте</string>
+    <string name="focus_on_content_summary">Автоматически фокусировать клавиатуру на контенте вместо заголовка</string>
 </resources>
