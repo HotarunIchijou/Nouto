@@ -45,5 +45,12 @@
             android:title="@string/show_keyboard"
             android:summary="@string/show_keyboard_summary"
             android:defaultValue="true" />
+
+        <org.kaorun.nouto.ui.components.MaterialSwitchPreferenceCompat
+            android:key="focus_on_content"
+            android:icon="@drawable/notes_24px"
+            android:title="@string/focus_on_content"
+            android:summary="@string/focus_on_content_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>

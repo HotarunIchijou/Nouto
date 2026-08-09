@@ -99,4 +99,7 @@
     <string name="view_only_mode">View only mode</string>
     <string name="view_only_mode_summary">Open existing note in view only mode</string>
     <string name="system_default">System default</string>
+    <string name="delete_permanently">Delete permanently</string>
+    <string name="focus_on_content">Focus on content</string>
+    <string name="focus_on_content_summary">Automatically focus keyboard on content instead of title</string>
 </resources>

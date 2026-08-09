@@ -64,6 +64,10 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Error</item>
     </style>
 
+    <style name="OutlinedButton" parent="Widget.Material3Expressive.Button.OutlinedButton">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
     <style name="ButtonDialogNegative" parent="Widget.Material3Expressive.Button.OutlinedButton">
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:textColor">?colorError</item>

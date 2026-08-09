@@ -26,11 +26,23 @@ class PreferenceAppearanceFragment : PreferenceBaseFragment() {
 
         findPreference<ListPreference>(ThemeHelper.KEY)
             ?.setOnPreferenceChangeListener { _, value ->
-            ThemeHelper.apply(value)
-            true
+                ThemeHelper.apply(value)
+                true
+            }
+
+        findPreference<SwitchPreferenceCompat>(BlackThemeHelper.KEY)?.apply {
+            isVisible = isDarkMode
+            setOnPreferenceChangeListener { _, _ ->
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (isAdded) {
+                        requireActivity().recreate()
+                    }
+                }, animationTime)
+                true
+            }
         }
 
-        findPreference<SwitchPreferenceCompat>(BlackThemeHelper.KEY)
+        findPreference<SwitchPreferenceCompat>(ColorThemeHelper.KEY_DYNAMIC)
             ?.setOnPreferenceChangeListener { _, _ ->
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (isAdded) {
@@ -40,36 +52,40 @@ class PreferenceAppearanceFragment : PreferenceBaseFragment() {
                 true
             }
 
-        findPreference<SwitchPreferenceCompat>(BlackThemeHelper.KEY)?.isVisible = isDarkMode
-
-        findPreference<SwitchPreferenceCompat>(ColorThemeHelper.KEY_DYNAMIC)
-            ?.setOnPreferenceChangeListener { _, _ ->
-                Handler(Looper.getMainLooper()).postDelayed(
-                    {
-                        if (isAdded) {
-                            requireActivity().recreate()
-                        }
-                    },
-                    animationTime
-                )
-                true
-            }
-
         findPreference<SwitchPreferenceCompat>("view_only_mode")
-            ?.setOnPreferenceChangeListener {_, newValue ->
+            ?.setOnPreferenceChangeListener { _, value ->
                 PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
-                    putBoolean("is_view_only_mode", newValue as Boolean)
+                    putBoolean("is_view_only_mode", value as Boolean)
                 }
                 true
             }
 
-        findPreference<SwitchPreferenceCompat>("show_keyboard")
-            ?.setOnPreferenceChangeListener { _, newValue ->
-                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
-                    putBoolean("is_show_keyboard", newValue as Boolean)
-                }
-                true
+        val focusOnContentPreference = findPreference<SwitchPreferenceCompat>("focus_on_content")
+        val showKeyboardPreference = findPreference<SwitchPreferenceCompat>("show_keyboard")
+        val isShowKeyboard = showKeyboardPreference?.isChecked ?: PreferenceManager
+            .getDefaultSharedPreferences(requireContext())
+            .getBoolean("is_show_keyboard", true)
+
+        focusOnContentPreference?.isVisible = isShowKeyboard
+
+        showKeyboardPreference?.setOnPreferenceChangeListener { _, value ->
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                putBoolean("is_show_keyboard", value as Boolean)
             }
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (isAdded) {
+                    focusOnContentPreference?.isVisible = value as Boolean
+                }
+            }, animationTime)
+            true
+        }
+
+        focusOnContentPreference?.setOnPreferenceChangeListener { _, value ->
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                putBoolean("is_focus_on_content", value as Boolean)
+            }
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

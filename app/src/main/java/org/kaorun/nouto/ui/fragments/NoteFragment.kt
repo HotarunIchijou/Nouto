@@ -337,7 +337,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             isAdditionalTopPaddingEnabled = true,
             isAdditionalHorizontalPaddingEnabled = true,
             isTopSystemPaddingEnabled = false,
-            additionalPadding = resources.getDimensionPixelSize(R.dimen.button_group_import_padding)
+            additionalPadding = resources.getDimensionPixelSize(R.dimen.button_group_padding)
         )
         InsetsHandler.applyViewInsets(
             binding.buttonEditNote,
@@ -345,22 +345,14 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         )
         InsetsHandler.applyImeInsets(binding.buttonEditNote)
         InsetsHandler.applyImeInsets(binding.scrollView)
-
-//        (enterTransition as? Transition)?.addListener(
-//            object : Transition.TransitionListener {
-//                override fun onTransitionEnd(transition: Transition) {
-//                    InsetsHandler.applyImeInsets(binding.floatingToolbar)
-//                }
-//                override fun onTransitionStart(transition: Transition) {}
-//                override fun onTransitionCancel(transition: Transition) {
-//                    InsetsHandler.applyImeInsets(binding.floatingToolbar)
-//                }
-//                override fun onTransitionPause(transition: Transition) {}
-//                override fun onTransitionResume(transition: Transition) {}
-//            }
-//        ) ?: InsetsHandler.applyImeInsets(binding.floatingToolbar)
-
         InsetsHandler.applyImeInsets(binding.floatingToolbar)
+        InsetsHandler.applyViewInsets(
+            view = binding.buttonGroupBottom,
+            isAdditionalTopPaddingEnabled = true,
+            isAdditionalHorizontalPaddingEnabled = true,
+            isTopSystemPaddingEnabled = false,
+            additionalPadding = resources.getDimensionPixelSize(R.dimen.button_group_padding)
+        )
     }
 
     private fun updateUIState(
@@ -382,7 +374,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         binding.buttonEditNote.isVisible = !isDeleted && !isImporting
         binding.buttonMenu.isVisible = !isImporting && !isDeleted
         binding.floatingToolbar.isVisible = isEditable
-        binding.buttonGroup.isVisible = isDeleted && !isImporting
+        binding.buttonGroupBottom.isVisible = isDeleted && !isImporting
         binding.buttonGroupMenu.isVisible = !isDeleted && !isImporting
 
         if (isEditable) {
@@ -440,8 +432,15 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     }
 
     private fun showKeyboard() {
-        binding.noteTitle.requestFocus()
-        WindowCompat.getInsetsController(requireActivity().window, binding.noteTitle)
+        val focusableView = if (
+            PreferenceManager
+                .getDefaultSharedPreferences(requireContext())
+                .getBoolean("is_focus_on_content", false)
+        ) binding.noteContent
+        else binding.noteTitle
+
+        focusableView.requestFocus()
+        WindowCompat.getInsetsController(requireActivity().window, focusableView)
             .show(WindowInsetsCompat.Type.ime())
     }
 
