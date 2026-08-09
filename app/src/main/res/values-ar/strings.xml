@@ -94,4 +94,8 @@
     <string name="show_keyboard_summary">إظهار لوحة المفاتيح تلقائياً عند فتح الملاحظة</string>
     <string name="view_only_mode">وضع العرض فقط</string>
     <string name="view_only_mode_summary">فتح الملاحظة الموجودة في وضع العرض فقط</string>
+    <string name="system_default">الافتراضي حسب النظام</string>
+    <string name="delete_permanently">حذف نهائي</string>
+    <string name="focus_on_content">التركيز على المحتوى</string>
+    <string name="focus_on_content_summary">تركيز لوحة المفاتيح تلقائيًا على المحتوى بدلاً من العنوان</string>
 </resources>
