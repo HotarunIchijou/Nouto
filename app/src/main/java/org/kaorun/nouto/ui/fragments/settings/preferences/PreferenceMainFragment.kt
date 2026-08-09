@@ -1,10 +1,6 @@
 package org.kaorun.nouto.ui.fragments.settings.preferences
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -33,12 +29,9 @@ class PreferenceMainFragment : PreferenceBaseFragment() {
         }
 
         findPreference<Preference>("screen_language")?.setOnPreferenceClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
-                    data = Uri.fromParts("package", requireContext().packageName, null)
-                }
-                startActivity(intent)
-            }
+            TransitionManager.endTransitions(parentView)
+           requireParentFragment().findNavController()
+               .navigate(R.id.action_settingsMainFragment_to_settingsLanguageFragment)
             true
         }
 

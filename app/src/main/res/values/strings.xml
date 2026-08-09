@@ -98,4 +98,5 @@
     <string name="show_keyboard_summary">Automatically show keyboard when opening note</string>
     <string name="view_only_mode">View only mode</string>
     <string name="view_only_mode_summary">Open existing note in view only mode</string>
+    <string name="system_default">System default</string>
 </resources>
