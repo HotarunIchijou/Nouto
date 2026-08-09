@@ -94,4 +94,5 @@
     <string name="show_keyboard_summary">Märkme avamisel näita automaatselt klahvistikku</string>
     <string name="view_only_mode">Režiim ainult vaatamiseks</string>
     <string name="view_only_mode_summary">Ava olemasoleva märge vaid vaatamisrežiimis</string>
+    <string name="system_default">Süsteemi vaikeseadistus</string>
 </resources>
