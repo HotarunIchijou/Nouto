@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="save">Сохранить</string>
-    <string name="title">Название</string>
+    <string name="title">Заголовок</string>
     <string name="notes_hint">Введите свои заметки здесь</string>
     <string name="delete">Удалить</string>
     <string name="add_note">Добавить заметку</string>
@@ -98,4 +98,6 @@
     <string name="delete_permanently">Удалить навсегда</string>
     <string name="focus_on_content">Фокус на контенте</string>
     <string name="focus_on_content_summary">Автоматически фокусировать клавиатуру на контенте вместо заголовка</string>
+    <string name="show_title">Показывать заголовок</string>
+    <string name="show_title_summary">Показывать заголовок в редакторе заметок</string>
 </resources>
