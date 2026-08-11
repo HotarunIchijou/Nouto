@@ -98,4 +98,6 @@
     <string name="delete_permanently">Kalıcı olarak sil</string>
     <string name="focus_on_content">İçeriğe odaklan</string>
     <string name="focus_on_content_summary">Başlık yerine içeriğe otomatik olarak klavyeyi odakla</string>
+    <string name="show_title">Başlığı göster</string>
+    <string name="show_title_summary">Not düzenleyicisinde başlığı göster</string>
 </resources>
