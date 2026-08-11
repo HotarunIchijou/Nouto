@@ -36,6 +36,7 @@ import org.kaorun.nouto.ui.components.TextStyleFloatingToolbar
 import org.kaorun.nouto.ui.fragments.base.BaseFragment
 import org.kaorun.nouto.ui.utils.FileUtils
 import org.kaorun.nouto.ui.utils.InsetsHandler
+import org.kaorun.nouto.data.PreferenceAppearanceKeys
 import org.kaorun.nouto.viewmodel.NotesViewModel
 
 class NoteFragment : BaseFragment(R.layout.fragment_note) {
@@ -51,6 +52,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private var isRestoring = false
     private var isPinned = false
     private var isImporting = false
+    private var isTitleVisible = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,15 +89,18 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         if (noteId != -1) {
             val isInViewOnlyMode = PreferenceManager
                 .getDefaultSharedPreferences(requireContext())
-                .getBoolean("is_view_only_mode", false)
+                .getBoolean(PreferenceAppearanceKeys.IS_VIEW_ONLY_MODE, false)
 
             viewModel.getNote(noteId).observe(viewLifecycleOwner) { existingNote ->
                 existingNote?.let {
                     note = it
+                    isPinned = it.isPinned
+
                     binding.noteTitle.setRichTextEditing(true, it.title)
                     binding.noteContent.setRichTextEditing(true, it.content)
                     binding.noteTitle.setSelection(binding.noteTitle.text?.length ?: 0)
-                    isPinned = it.isPinned
+                    binding.noteContent.setSelection(binding.noteContent.text?.length ?: 0)
+
                     updateUIState(note, !isRestoring, isInViewOnlyMode)
                 }
             }
@@ -271,9 +276,9 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private fun setupChangeListener() {
         val isChanged = {
             (binding.noteTitle.getText(RTFormat.HTML).orEmpty() != (note?.title ?: "") &&
-            binding.noteTitle.getText(RTFormat.HTML).toPlainText().isNotEmpty()) ||
-            (binding.noteContent.getText(RTFormat.HTML).orEmpty() != (note?.content ?: "") &&
-            binding.noteContent.getText(RTFormat.HTML).toPlainText().isNotEmpty())
+                    binding.noteTitle.getText(RTFormat.HTML).toPlainText().isNotEmpty()) ||
+                    (binding.noteContent.getText(RTFormat.HTML).orEmpty() != (note?.content ?: "") &&
+                            binding.noteContent.getText(RTFormat.HTML).toPlainText().isNotEmpty())
         }
 
         val watcher = object : TextWatcher {
@@ -282,7 +287,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                     val title = binding.noteTitle.getText(RTFormat.HTML)
                     val content = binding.noteContent.getText(RTFormat.HTML)
                     (title != (note?.title ?: "") && title.toPlainText().isNotEmpty()) ||
-                    (content != (note?.content ?: "") && content.toPlainText().isNotEmpty())
+                            (content != (note?.content ?: "") && content.toPlainText().isNotEmpty())
                 }
                 setButtonVisible(isChanged())
             }
@@ -291,7 +296,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
 
         listOf(binding.styleBold, binding.styleItalic, binding.styleUnderline).forEach {
-            it.addOnCheckedChangeListener {  _, _ ->
+            it.addOnCheckedChangeListener { _, _ ->
                 binding.root.post {
                     setButtonVisible(isChanged())
                 }
@@ -324,11 +329,13 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         )
         InsetsHandler.applyViewInsets(
             view = binding.noteContent,
-            isTopPaddingEnabled = false,
+            isTopPaddingEnabled = true,
             isBottomPaddingEnabled = true,
             isHorizontalPaddingEnabled = false,
+            isTopSystemPaddingEnabled = false,
             additionalPadding = resources.getDimensionPixelSize(R.dimen.note_container_bottom_margin)
         )
+
         InsetsHandler.applyViewInsets(
             view = binding.buttonGroupImport,
             isTopPaddingEnabled = true,
@@ -382,9 +389,19 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             binding.buttonEditNote.hide()
         }
 
+        isTitleVisible = PreferenceManager
+            .getDefaultSharedPreferences(requireContext())
+            .getBoolean(PreferenceAppearanceKeys.IS_SHOW_TITLE, true)
+
+        if (!isTitleVisible) {
+            binding.noteTitle.isVisible = false
+            binding.titleDivider.isVisible = false
+            binding.noteContentSpacing.isVisible = true
+        }
+
         val isShowKeyboardPreference = PreferenceManager
             .getDefaultSharedPreferences(requireContext())
-            .getBoolean("is_show_keyboard", true)
+            .getBoolean(PreferenceAppearanceKeys.IS_SHOW_KEYBOARD, true)
 
         if (isEditable && isShowKeyboard && isShowKeyboardPreference) {
             showKeyboard()
@@ -417,7 +434,6 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         val content = if (htmlContent.toPlainText().isBlank()) "" else htmlContent.trimHtml()
         val time = System.currentTimeMillis()
 
-
         note?.let {
             if (note!!.title != htmlTitle || note!!.content != htmlContent || it.isPinned != isPinned) {
                 viewModel.updateNote(
@@ -432,12 +448,14 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     }
 
     private fun showKeyboard() {
-        val focusableView = if (
-            PreferenceManager
-                .getDefaultSharedPreferences(requireContext())
-                .getBoolean("is_focus_on_content", false)
-        ) binding.noteContent
-        else binding.noteTitle
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val focusOnContent = prefs.getBoolean(PreferenceAppearanceKeys.IS_FOCUS_ON_CONTENT, false)
+
+        val focusableView = if (!isTitleVisible || focusOnContent) {
+            binding.noteContent
+        } else {
+            binding.noteTitle
+        }
 
         focusableView.requestFocus()
         WindowCompat.getInsetsController(requireActivity().window, focusableView)

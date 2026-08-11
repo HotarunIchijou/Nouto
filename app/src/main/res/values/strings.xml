@@ -102,4 +102,6 @@
     <string name="delete_permanently">Delete permanently</string>
     <string name="focus_on_content">Focus on content</string>
     <string name="focus_on_content_summary">Automatically focus keyboard on content instead of title</string>
+    <string name="show_title">Show title</string>
+    <string name="show_title_summary">Show title in note editor</string>
 </resources>

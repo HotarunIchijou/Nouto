@@ -106,6 +106,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <Space
+                android:id="@+id/note_content_spacing"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/note_content" />
+
             <com.onegravity.rteditor.RTEditText
                 android:id="@+id/note_content"
                 android:layout_width="0dp"

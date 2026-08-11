@@ -40,6 +40,13 @@
             android:defaultValue="false" />
 
         <org.kaorun.nouto.ui.components.MaterialSwitchPreferenceCompat
+            android:key="show_title"
+            android:icon="@drawable/title_24px"
+            android:title="@string/show_title"
+            android:summary="@string/show_title_summary"
+            android:defaultValue="true" />
+
+        <org.kaorun.nouto.ui.components.MaterialSwitchPreferenceCompat
             android:key="show_keyboard"
             android:icon="@drawable/keyboard_alt_24px"
             android:title="@string/show_keyboard"
