@@ -98,4 +98,6 @@
     <string name="delete_permanently">حذف نهائي</string>
     <string name="focus_on_content">التركيز على المحتوى</string>
     <string name="focus_on_content_summary">تركيز لوحة المفاتيح تلقائيًا على المحتوى بدلاً من العنوان</string>
+    <string name="show_title">أظهر العنوان</string>
+    <string name="show_title_summary">أظهر العنوان في محرر الملاحظات</string>
 </resources>
