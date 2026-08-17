@@ -10,28 +10,32 @@ import org.kaorun.nouto.data.Note
 import org.kaorun.nouto.repository.NoteRepository
 import kotlinx.coroutines.launch
 import org.kaorun.nouto.data.NoteDatabase
+import org.kaorun.nouto.repository.PreferenceRepository
+import org.kaorun.nouto.ui.model.LayoutMode
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: NoteRepository
+    private val noteRepository: NoteRepository
+    private val preferenceRepository = PreferenceRepository(application)
+
     private val _searchQuery = MutableLiveData<String?>(null)
-    private val _isGridMode = MutableLiveData(false)
-    private val allNotes: LiveData<List<Note>>
+    private val _layoutMode = MutableLiveData(preferenceRepository.getLayoutMode())
+    private val _allNotes: LiveData<List<Note>>
     private val _pendingDelete = MutableLiveData<Note?>()
     val deletedNotes: LiveData<List<Note>>
     val displayedNotes: LiveData<List<Note>>
     val searchQuery: LiveData<String?> = _searchQuery
-    val isGridMode: LiveData<Boolean> = _isGridMode
+    val layoutMode: LiveData<LayoutMode> = _layoutMode
     val pendingDelete: LiveData<Note?> = _pendingDelete
 
 
     init {
         val noteDao = NoteDatabase.getDatabase(application).noteDao()
-        repository = NoteRepository(noteDao)
-        allNotes = repository.allNotes
-        deletedNotes = repository.deletedNotes
+        noteRepository = NoteRepository(noteDao)
+        _allNotes = noteRepository.allNotes
+        deletedNotes = noteRepository.deletedNotes
         displayedNotes = searchQuery.switchMap { query ->
-            if (query.isNullOrBlank()) allNotes
-            else repository.searchNotes(query)
+            if (query.isNullOrBlank()) _allNotes
+            else noteRepository.searchNotes(query)
         }
     }
 
@@ -39,11 +43,15 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         _searchQuery.value = query
     }
 
-    fun setGridMode(isGrid: Boolean) {
-        _isGridMode.value = isGrid
+    fun toggleLayoutMode() {
+        val layoutMode = if (_layoutMode.value == LayoutMode.LINEAR) LayoutMode.GRID
+        else LayoutMode.LINEAR
+
+        preferenceRepository.saveLayoutMode(layoutMode)
+        _layoutMode.value = layoutMode
     }
 
-    fun getNote(id: Int): LiveData<Note> = repository.getNoteById(id)
+    fun getNote(id: Int): LiveData<Note> = noteRepository.getNoteById(id)
 
     fun addNote(
         title: String?,
@@ -53,7 +61,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
     ) {
         if (title.isNullOrBlank() && content.isNullOrBlank()) return
         viewModelScope.launch {
-            repository.insert(
+            noteRepository.insert(
                 Note(
                     title = title,
                     content = content,
@@ -67,30 +75,30 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
     fun updateNote(note: Note) {
         viewModelScope.launch {
             if (note.title.isNullOrBlank() && note.content.isNullOrBlank()) {
-                repository.delete(note)
+                noteRepository.delete(note)
             } else {
-                repository.update(note)
+                noteRepository.update(note)
             }
         }
     }
 
     fun deleteNote(note: Note) {
-        viewModelScope.launch { repository.delete(note) }
+        viewModelScope.launch { noteRepository.delete(note) }
     }
 
     fun deleteNotes(notes: List<Note>) {
-        viewModelScope.launch { repository.delete(notes) }
+        viewModelScope.launch { noteRepository.delete(notes) }
     }
 
     fun markDeleted(note: Note) {
         viewModelScope.launch {
-            repository.update(note.copy(isDeleted = true))
+            noteRepository.update(note.copy(isDeleted = true))
         }
     }
 
     fun unmarkDeleted(note: Note) {
         viewModelScope.launch {
-            repository.update(note.copy(isDeleted = false))
+            noteRepository.update(note.copy(isDeleted = false))
         }
     }
 

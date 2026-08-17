@@ -12,9 +12,8 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import org.kaorun.nouto.R
 import org.kaorun.nouto.ui.fragments.base.PreferenceBaseFragment
-import org.kaorun.nouto.ui.utils.BlackThemeHelper
-import org.kaorun.nouto.ui.utils.ColorThemeHelper
 import org.kaorun.nouto.ui.utils.ThemeHelper
+import org.kaorun.nouto.data.PreferenceAppearanceKeys
 
 class PreferenceAppearanceFragment : PreferenceBaseFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -24,13 +23,25 @@ class PreferenceAppearanceFragment : PreferenceBaseFragment() {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
-        findPreference<ListPreference>(ThemeHelper.KEY)
+        findPreference<ListPreference>(PreferenceAppearanceKeys.WIDGET_THEME)
             ?.setOnPreferenceChangeListener { _, value ->
-            ThemeHelper.apply(value)
-            true
+                ThemeHelper.apply(value)
+                true
+            }
+
+        findPreference<SwitchPreferenceCompat>(PreferenceAppearanceKeys.WIDGET_BLACK_THEME)?.apply {
+            isVisible = isDarkMode
+            setOnPreferenceChangeListener { _, _ ->
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (isAdded) {
+                        requireActivity().recreate()
+                    }
+                }, animationTime)
+                true
+            }
         }
 
-        findPreference<SwitchPreferenceCompat>(BlackThemeHelper.KEY)
+        findPreference<SwitchPreferenceCompat>(PreferenceAppearanceKeys.WIDGET_DYNAMIC_COLORS)
             ?.setOnPreferenceChangeListener { _, _ ->
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (isAdded) {
@@ -40,36 +51,48 @@ class PreferenceAppearanceFragment : PreferenceBaseFragment() {
                 true
             }
 
-        findPreference<SwitchPreferenceCompat>(BlackThemeHelper.KEY)?.isVisible = isDarkMode
-
-        findPreference<SwitchPreferenceCompat>(ColorThemeHelper.KEY_DYNAMIC)
-            ?.setOnPreferenceChangeListener { _, _ ->
-                Handler(Looper.getMainLooper()).postDelayed(
-                    {
-                        if (isAdded) {
-                            requireActivity().recreate()
-                        }
-                    },
-                    animationTime
-                )
-                true
-            }
-
-        findPreference<SwitchPreferenceCompat>("view_only_mode")
-            ?.setOnPreferenceChangeListener {_, newValue ->
+        findPreference<SwitchPreferenceCompat>(PreferenceAppearanceKeys.WIDGET_VIEW_ONLY_MODE)
+            ?.setOnPreferenceChangeListener { _, value ->
                 PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
-                    putBoolean("is_view_only_mode", newValue as Boolean)
+                    putBoolean(PreferenceAppearanceKeys.IS_VIEW_ONLY_MODE, value as Boolean)
                 }
                 true
             }
 
-        findPreference<SwitchPreferenceCompat>("show_keyboard")
-            ?.setOnPreferenceChangeListener { _, newValue ->
-                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
-                    putBoolean("is_show_keyboard", newValue as Boolean)
-                }
-                true
+        val focusOnContentPreference =
+            findPreference<SwitchPreferenceCompat>(PreferenceAppearanceKeys.WIDGET_FOCUS_ON_CONTENT)
+        val showKeyboardPreference =
+            findPreference<SwitchPreferenceCompat>(PreferenceAppearanceKeys.WIDGET_SHOW_KEYBOARD)
+        val showTitlePreference =
+            findPreference<SwitchPreferenceCompat>(PreferenceAppearanceKeys.WIDGET_SHOW_TITLE)
+
+        focusOnContentPreference?.isEnabled =
+            (showTitlePreference?.isChecked == true) && (showKeyboardPreference?.isChecked == true)
+
+        showTitlePreference?.setOnPreferenceChangeListener { _, value ->
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                putBoolean(PreferenceAppearanceKeys.IS_SHOW_TITLE, value as Boolean)
             }
+            focusOnContentPreference?.isEnabled = value as Boolean &&
+                    showKeyboardPreference?.isChecked == true
+            true
+        }
+
+        showKeyboardPreference?.setOnPreferenceChangeListener { _, value ->
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                putBoolean(PreferenceAppearanceKeys.IS_SHOW_KEYBOARD, value as Boolean)
+            }
+            focusOnContentPreference?.isEnabled = value as Boolean &&
+                    showTitlePreference?.isChecked == true
+            true
+        }
+
+        focusOnContentPreference?.setOnPreferenceChangeListener { _, value ->
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                putBoolean(PreferenceAppearanceKeys.IS_FOCUS_ON_CONTENT, value as Boolean)
+            }
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

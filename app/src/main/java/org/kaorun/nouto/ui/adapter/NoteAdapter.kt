@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
@@ -17,6 +18,7 @@ import com.google.android.material.listitem.RevealableListItem
 import com.google.android.material.listitem.SwipeableListItem
 import com.google.android.material.listitem.SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION
 import org.kaorun.nouto.R
+import org.kaorun.nouto.data.PreferenceAppearanceKeys
 
 class NoteAdapter(
     private val onItemClick: (Note) -> Unit,
@@ -55,9 +57,17 @@ class NoteAdapter(
                 binding.root.setSwipeState(SwipeableListItem.STATE_CLOSED, it)
             }
             note = currentNote
+            val isTitleVisible = PreferenceManager
+                .getDefaultSharedPreferences(binding.root.context)
+                .getBoolean(PreferenceAppearanceKeys.IS_SHOW_TITLE, true)
+
             binding.noteTitle.text = HtmlCompat.fromHtml(
-                (if (note.title.isNullOrBlank()) note.content else note.title)!!,
-                HtmlCompat.FROM_HTML_MODE_COMPACT
+                /* source = */ (
+                    if (isTitleVisible && !note.title.isNullOrBlank()) note.title
+                    else if (note.content.isNullOrBlank()) note.title
+                    else note.content
+                )!!,
+                /* flags = */ HtmlCompat.FROM_HTML_MODE_COMPACT
             )
 
             if (note.isPinned && !note.isDeleted) {

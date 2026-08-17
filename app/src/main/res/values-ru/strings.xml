@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="save">Сохранить</string>
-    <string name="title">Название</string>
+    <string name="title">Заголовок</string>
     <string name="notes_hint">Введите свои заметки здесь</string>
     <string name="delete">Удалить</string>
     <string name="add_note">Добавить заметку</string>
@@ -77,7 +77,7 @@
     <string name="export">Экспорт</string>
     <string name="export_success">Заметка была успешно экспортирована</string>
     <string name="application_data">Данные приложения</string>
-    <string name="note_entries">Заметки</string>
+    <string name="note_entries">Отдельные заметки</string>
     <string name="export_note">Экспортировать заметку</string>
     <string name="export_note_summary">Экспортировать заметку на ваше устройство</string>
     <string name="import_note">Импортировать заметку</string>
@@ -94,4 +94,10 @@
     <string name="show_keyboard_summary">Автоматически показывать клавиатуру при открытии заметки</string>
     <string name="view_only_mode">Режим просмотра</string>
     <string name="view_only_mode_summary">Открывать существующую заметку в режиме просмотра</string>
+    <string name="system_default">Как в системе</string>
+    <string name="delete_permanently">Удалить навсегда</string>
+    <string name="focus_on_content">Фокус на контенте</string>
+    <string name="focus_on_content_summary">Автоматически фокусировать клавиатуру на контенте вместо заголовка</string>
+    <string name="show_title">Показывать заголовок</string>
+    <string name="show_title_summary">Показывать заголовок в редакторе заметок</string>
 </resources>

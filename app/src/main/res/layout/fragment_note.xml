@@ -30,34 +30,6 @@
                 android:theme="@style/ThemeOverlay.CircleNavigationButton"
                 app:navigationIcon="@drawable/arrow_back_24px"
                 tools:ignore="RtlSymmetry">
-
-                <com.google.android.material.button.MaterialButtonGroup
-                    android:id="@+id/button_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:gravity="center_vertical|end"
-                    android:spacing="4dp"
-                    android:visibility="gone">
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
-                        android:id="@+id/button_delete_permanently"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:backgroundTint="?colorSurfaceContainerHighest"
-                        app:iconTint="?colorOnSurfaceVariant"
-                        app:icon="@drawable/delete_forever_24px"
-                        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small.Narrow" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
-                        android:id="@+id/button_restore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:icon="@drawable/restore_from_trash_24px"
-                        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small.Wide" />
-                </com.google.android.material.button.MaterialButtonGroup>
             </com.google.android.material.appbar.MaterialToolbar>
 
             <com.google.android.material.button.MaterialButtonGroup
@@ -134,6 +106,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <Space
+                android:id="@+id/note_content_spacing"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/note_content" />
+
             <com.onegravity.rteditor.RTEditText
                 android:id="@+id/note_content"
                 android:layout_width="0dp"
@@ -161,11 +142,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"
-        android:background="?colorSurfaceContainerHigh"
+        android:background="?colorSurfaceContainer"
         android:visibility="gone">
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
+            style="@style/OutlinedButton"
             android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -180,6 +161,7 @@
             android:text="@string/import_button"
             app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium" />
     </com.google.android.material.button.MaterialButtonGroup>
+
     <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
         style="?attr/floatingToolbarVibrantStyle"
         android:id="@+id/floating_toolbar"
@@ -227,6 +209,33 @@
         </LinearLayout>
     </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
 
+    <com.google.android.material.button.MaterialButtonGroup
+        android:id="@+id/button_group_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="?colorSurfaceContainer">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_delete_permanently"
+            style="@style/OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_permanently"
+            app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_restore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/restore"
+            app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium"/>
+
+    </com.google.android.material.button.MaterialButtonGroup>
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         style="?extendedFloatingActionButtonMediumStyle"
         android:id="@+id/button_edit_note"
@@ -236,6 +245,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:contentDescription="@string/edit_note"
         android:text="@string/edit_note"
+        android:visibility="gone"
         app:icon="@drawable/edit_24px"
         tools:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

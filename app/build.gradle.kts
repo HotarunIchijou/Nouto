@@ -12,10 +12,8 @@ android {
         applicationId = "org.kaorun.nouto"
         minSdk = 28
         targetSdk = 37
-        versionCode = 3
-        versionName = "1.2.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        versionCode = 4
+        versionName = "1.3.0"
     }
 
     buildTypes {
@@ -42,6 +40,11 @@ android {
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
+    }
+
+    configurations.all {
+        exclude(group = "io.opencensus", module = "opencensus-api")
+        exclude(group = "io.opencensus", module = "opencensus-proto")
     }
 }
 

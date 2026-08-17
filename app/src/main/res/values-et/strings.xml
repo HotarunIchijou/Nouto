@@ -94,4 +94,10 @@
     <string name="show_keyboard_summary">Märkme avamisel näita automaatselt klahvistikku</string>
     <string name="view_only_mode">Režiim ainult vaatamiseks</string>
     <string name="view_only_mode_summary">Ava olemasoleva märge vaid vaatamisrežiimis</string>
+    <string name="system_default">Süsteemi vaikeseadistus</string>
+    <string name="delete_permanently">Kustuta jäädavalt</string>
+    <string name="focus_on_content">Säti fookus sisule</string>
+    <string name="focus_on_content_summary">Säti klahvistiku fookus pealkirja asemel sisule</string>
+    <string name="show_title">Näita pealkirja</string>
+    <string name="show_title_summary">Näita märkme muutmisvaates pealkirja</string>
 </resources>

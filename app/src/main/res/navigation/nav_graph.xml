@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_settingsMainFragment_to_settingsBackupRestoreFragment"
             app:destination="@id/settingsBackupRestoreFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsLanguageFragment"
+            app:destination="@id/settingsLanguageFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsAppearanceFragment"
@@ -92,5 +95,10 @@
         android:name="org.kaorun.nouto.ui.fragments.settings.SettingsNoteExportFragment"
         android:label="NoteExportFragment"
         tools:layout="@layout/fragment_note_export" />
+    <fragment
+        android:id="@+id/settingsLanguageFragment"
+        android:name="org.kaorun.nouto.ui.fragments.settings.SettingsLanguageFragment"
+        android:label="SettingsLanguageFragment"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

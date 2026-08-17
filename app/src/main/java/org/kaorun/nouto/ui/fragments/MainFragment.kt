@@ -41,7 +41,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     private lateinit var noteAdapter: NoteAdapter
     private val viewModel: NotesViewModel by navGraphViewModels(R.id.nav_graph)
     private val searchViewModel: SearchViewModel by viewModels()
-    private var layoutMode = LayoutMode.LINEAR
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -270,13 +269,12 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     }
 
     private fun setupLayoutMode() {
-        viewModel.isGridMode.observe(viewLifecycleOwner) { isGrid ->
-            layoutMode = if (isGrid) LayoutMode.GRID else LayoutMode.LINEAR
-            applyLayoutMode()
+        viewModel.layoutMode.observe(viewLifecycleOwner) { layoutMode ->
+            applyLayoutMode(layoutMode)
         }
     }
 
-    private fun applyLayoutMode() {
+    private fun applyLayoutMode(layoutMode: LayoutMode) {
         binding.layoutButton.setIconResource(
             if (layoutMode == LayoutMode.GRID) R.drawable.view_agenda_24px
             else R.drawable.grid_view_24px
@@ -305,8 +303,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     }
 
     private fun switchLayout() {
-        val newMode = layoutMode != LayoutMode.GRID
-        viewModel.setGridMode(newMode)
+        viewModel.toggleLayoutMode()
     }
 
     override fun onDestroyView() {
