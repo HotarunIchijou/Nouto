@@ -1,0 +1,6 @@
+• Ability to show/hide the note title, with an option to auto-focus content when there's no title
+• In-app language picker, working on devices below Android 13
+• Grid/list layout preference now saved across app restarts
+• Added Arabic and Turkish translations, updated Spanish, Russian and Estonian translations
+• Moved delete/restore buttons in the note editor into a clearer bottom action bar
+• Various fixes and stability improvements
