@@ -1,3 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="save">Salvar</string>
+    <string name="title">Título</string>
+    <string name="notes_hint">Digite suas notas aqui</string>
+    <string name="delete">Excluir</string>
+    <string name="add_note">Adicionar nota</string>
+    <string name="searchbar_hint">Pesquisar</string>
+    <string name="navigation_drawer_description">Gaveta de navegação</string>
+    <string name="layout_switch_description">Alterar visual</string>
+    <string name="notes">Notas</string>
+    <string name="settings">Configurações</string>
+    <string name="search_delete_button_description">Excluir sugestão</string>
+    <string name="appearance">Aparência</string>
+    <string name="appearance_summary">Cores de aplicação e modos de tema</string>
+    <string name="about">Sobre</string>
+    <string name="about_summary">Sobre a aplicação</string>
+    <string name="theme">Tema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_system">Padrão do sistema</string>
+    <string name="okay">Ok</string>
+    <string name="cancel">Cancelar</string>
 </resources>
