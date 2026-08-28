@@ -21,7 +21,7 @@ import org.kaorun.nouto.viewmodel.SearchViewModel
 class MainSearchView(
     private val searchView: SearchView,
     private val searchBar: SearchBar,
-    private val fab: FloatingActionButton,
+    private val fab: View,
     private val searchRecyclerView: RecyclerView,
     private val searchSuggestionsEmptyLayout: View,
     private val viewModel: NotesViewModel,
@@ -57,11 +57,11 @@ class MainSearchView(
             when (newState) {
                 SearchView.TransitionState.SHOWING -> {
                     backCallback.isEnabled = true
-                    fab.hide()
+                    fab.isVisible = false
                 }
                 SearchView.TransitionState.HIDING -> {
                     backCallback.isEnabled = false
-                    fab.show()
+                    fab.isVisible = true
                 }
                 else -> Unit
             }

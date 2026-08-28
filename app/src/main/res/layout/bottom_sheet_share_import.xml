@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="?colorSurfaceContainer">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_library"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="?colorOnSurface" />
+
+    <!-- Resource Preview -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="?colorSurfaceContainerHigh"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/preview_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/description_24px"
+                app:tint="?colorPrimary"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/preview_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?colorOnSurface"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="Digital_Electronics_Notes.pdf" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/select_destination_folder"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        android:textColor="?colorOnSurface" />
+
+    <!-- Folder selection list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/folder_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp"
+        android:nestedScrollingEnabled="true" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3Expressive.Button.TextButton"
+        android:id="@+id/button_new_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/new_folder"
+        app:icon="@drawable/create_new_folder_24px" />
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="24dp">
+
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonOutlinedStyle"
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="@string/cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonStyle"
+            android:id="@+id/button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add" />
+    </LinearLayout>
+</LinearLayout>

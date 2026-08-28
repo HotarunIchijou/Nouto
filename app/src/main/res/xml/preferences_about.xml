@@ -3,18 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <Preference
-        android:key="source_code"
-        android:icon="@drawable/code_24px"
-        android:title="@string/source_code"
-        android:summary="@string/source_code_summary" />
-
-    <Preference
-        android:key="contact_developer"
-        android:icon="@drawable/support_agent_24px"
-        android:title="@string/contact_developer"
-        android:summary="@string/contact_developer_summary" />
-
-    <Preference
         android:key="version"
         android:icon="@drawable/info_24px"
         android:title="@string/version"

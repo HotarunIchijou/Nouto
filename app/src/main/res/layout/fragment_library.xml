@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorSurfaceContainer"
+    tools:context=".ui.fragments.LibraryFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        app:expanded="false">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            style="?collapsingToolbarLayoutLargeStyle"
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expandedTitleMarginStart="24dp"
+            app:expandedTitleMarginEnd="24dp"
+            app:expandedTitleMarginTop="102dp"
+            app:expandedTitleMarginBottom="32dp"
+            app:collapsedTitleTextAppearance="?textAppearanceTitleLargeEmphasized"
+            app:expandedTitleTextAppearance="?textAppearanceDisplaySmallEmphasized"
+            app:titleCollapseMode="scale"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp"
+                android:theme="@style/ThemeOverlay.CircleNavigationButton"
+                app:title="@string/library"
+                app:titleMarginStart="8dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/arrow_back_24px"
+                app:menu="@menu/library_toolbar_menu"
+                tools:ignore="RtlSymmetry" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true" />
+
+        <include
+            layout="@layout/illustration_library_empty"
+            android:id="@+id/empty_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_fab_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:elevation="6dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

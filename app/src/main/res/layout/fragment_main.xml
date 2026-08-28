@@ -4,89 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:background="?colorSurfaceContainer"
     tools:context=".ui.fragments.MainFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorSurfaceContainer"
-        android:theme="@style/ThemeOverlay.Material3Expressive.AppBarWithSearch"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recycler_view">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical">
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
-                android:id="@+id/navigation_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:contentDescription="@string/navigation_drawer_description"
-                app:icon="@drawable/menu_24px"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <com.google.android.material.search.SearchBar
-                android:id="@+id/search_bar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/searchbar_hint"
-                app:startSiblingViewId="@id/navigation_button"
-                app:endSiblingViewId="@id/layout_button"
-                app:backgroundTint="?colorSurfaceContainerHighest"
-                app:layout_constraintWidth_max="312dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/navigation_button"
-                app:layout_constraintEnd_toStartOf="@id/layout_button"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
-                android:id="@+id/layout_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:contentDescription="@string/layout_switch_description"
-                app:icon="@drawable/grid_view_24px"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
+    <!-- Recycler view mapped to parent bounds so it scrolls UNDER the search bar -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+        android:paddingTop="88dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        style="?floatingActionButtonLargePrimaryStyle"
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <!-- End of RecyclerView -->
+
+    <!-- Floating search row - positioned after RecyclerView to draw on top -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:contentDescription="@string/add_note"
-        android:src="@drawable/add_2_24px"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="ClassNameCheck" />
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+            android:id="@+id/navigation_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/navigation_drawer_description"
+            app:icon="@drawable/menu_24px"
+            app:backgroundTint="?colorSurfaceContainerHighest"
+            app:iconTint="?colorOnSurface"
+            app:elevation="3dp"
+            android:elevation="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/searchbar_hint"
+            app:startSiblingViewId="@id/navigation_button"
+            app:backgroundTint="?colorSurfaceContainerHighest"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/navigation_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         layout="@layout/illustration_notes_empty"
@@ -110,6 +90,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- FAB declared last so it renders above all other views -->
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_fab_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.search.SearchView
         style="@style/Widget.Material3Expressive.SearchView.AppBarWithSearch"

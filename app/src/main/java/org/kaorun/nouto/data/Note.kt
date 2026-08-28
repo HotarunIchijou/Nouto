@@ -12,5 +12,6 @@ data class Note(
     val content: String?,
     val time: Long,
     val isDeleted: Boolean = false,
-    @ColumnInfo(defaultValue = "0") val isPinned: Boolean = false
+    @ColumnInfo(defaultValue = "0") val isPinned: Boolean = false,
+    @ColumnInfo(defaultValue = "NULL") val folderId: Long? = null
 )

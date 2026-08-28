@@ -9,6 +9,12 @@ import androidx.room.Update
 
 @Dao
 interface NoteDao {
+    @Query("SELECT * FROM notes WHERE isDeleted = 0 AND folderId IS NULL ORDER BY isPinned DESC, time DESC")
+    fun getRootNotes(): LiveData<List<Note>>
+
+    @Query("SELECT * FROM notes WHERE isDeleted = 0 AND folderId = :folderId ORDER BY isPinned DESC, time DESC")
+    fun getNotesInFolder(folderId: Long): LiveData<List<Note>>
+
     @Query("SELECT * FROM notes WHERE isDeleted = 0 ORDER BY isPinned DESC, time DESC")
     fun getAllNotes(): LiveData<List<Note>>
 

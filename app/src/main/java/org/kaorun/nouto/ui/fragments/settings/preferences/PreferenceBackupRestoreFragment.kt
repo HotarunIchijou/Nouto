@@ -10,7 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
+import kotlinx.coroutines.launch
+import androidx.lifecycle.lifecycleScope
 import org.kaorun.nouto.R
 import org.kaorun.nouto.data.NoteDatabase
 import org.kaorun.nouto.ui.MainActivity
@@ -21,7 +22,7 @@ import org.kaorun.nouto.ui.utils.FileUtils
 
 class PreferenceBackupRestoreFragment : PreferenceBaseFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        val databaseBackup = (requireActivity() as MainActivity).roomBackup
+
         val importFilePicker: ActivityResultLauncher<String> = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri ->
@@ -48,6 +49,46 @@ class PreferenceBackupRestoreFragment : PreferenceBaseFragment() {
             }
         }
 
+        val backupFilePicker = registerForActivityResult(
+            ActivityResultContracts.CreateDocument("application/zip")
+        ) { uri ->
+            uri?.let {
+                lifecycleScope.launch {
+                    val result = org.kaorun.nouto.ui.utils.BackupRestoreUtils.createFullBackup(requireContext(), it)
+                    if (result.isSuccess) {
+                        Snackbar.make(requireView(), R.string.backup_database_success, Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        Snackbar.make(requireView(), "${getString(R.string.error_occured)}: ${result.exceptionOrNull()?.message}", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        val restoreFilePicker = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+            uri?.let {
+                lifecycleScope.launch {
+                    val result = org.kaorun.nouto.ui.utils.BackupRestoreUtils.restoreFullBackup(requireContext(), it)
+                    if (result.isSuccess) {
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setCancelable(false)
+                            .setIcon(R.drawable.restart_alt_24px)
+                            .setTitle(R.string.restart_app)
+                            .setMessage(R.string.restart_app_summary)
+                            .setPositiveButton(R.string.restart) { _, _ ->
+                                val intent = Intent(requireActivity(), MainActivity::class.java).putExtra("restore_success", true)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                startActivity(intent)
+                            }
+                            .show()
+                    } else {
+                        Snackbar.make(requireView(), "${getString(R.string.error_occured)}: ${result.exceptionOrNull()?.message}", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
         setPreferencesFromResource(R.xml.preferences_backup_restore, rootKey)
 
         findPreference<Preference>("export")?.setOnPreferenceClickListener {
@@ -61,71 +102,14 @@ class PreferenceBackupRestoreFragment : PreferenceBaseFragment() {
         }
 
         findPreference<Preference>("backup")?.setOnPreferenceClickListener {
-            databaseBackup
-                .database(NoteDatabase.getDatabase(requireContext()))
-                .backupLocation(RoomBackup.BACKUP_FILE_LOCATION_CUSTOM_DIALOG)
-                .apply {
-                    onCompleteListener { success, message, exitCode ->
-                        if (success) {
-                            Snackbar
-                                .make(
-                                    requireView(),
-                                    "${getString(R.string.backup_database_success)} ($exitCode)",
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                .show()
-                        } else if (exitCode == 3) {
-                            return@onCompleteListener
-                        } else {
-                            Snackbar
-                                .make(
-                                    requireView(),
-                                    "${getString(R.string.error_occured)}: $message (Exit code $exitCode)",
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                .show()
-                        }
-                    }
-                }
-                .backup()
+            val formatter = java.text.SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", java.util.Locale.getDefault())
+            val dateString = formatter.format(java.util.Date())
+            backupFilePicker.launch("nouto_backup_$dateString.zip")
             true
         }
 
         findPreference<Preference>("restore")?.setOnPreferenceClickListener {
-            databaseBackup
-                .database(NoteDatabase.getDatabase(requireContext()))
-                .backupLocation(RoomBackup.BACKUP_FILE_LOCATION_CUSTOM_DIALOG)
-                .apply {
-                    onCompleteListener { success, message, exitCode ->
-                        if (success) {
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setCancelable(false)
-                                .setIcon(R.drawable.restart_alt_24px)
-                                .setTitle(R.string.restart_app)
-                                .setMessage(R.string.restart_app_summary)
-                                .setPositiveButton(R.string.restart) { _, _ ->
-                                    restartApp(
-                                        Intent(
-                                            requireActivity(),
-                                            MainActivity::class.java
-                                        ).putExtra("restore_success", true)
-                                    )
-                                }
-                                .show()
-                        } else if (exitCode == 2) {
-                            return@onCompleteListener
-                        } else {
-                            Snackbar
-                                .make(
-                                    requireView(),
-                                    "${getString(R.string.error_occured)}: $message (Exit code $exitCode)",
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                .show()
-                        }
-                    }
-                }
-                .restore()
+            restoreFilePicker.launch("application/zip")
             true
         }
     }
