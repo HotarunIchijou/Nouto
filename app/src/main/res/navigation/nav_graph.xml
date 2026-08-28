@@ -5,6 +5,14 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
+    <action
+        android:id="@+id/action_global_libraryFragment"
+        app:destination="@id/libraryFragment" />
+
+    <action
+        android:id="@+id/action_global_noteFragment"
+        app:destination="@id/noteFragment" />
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="org.kaorun.nouto.ui.fragments.MainFragment"
@@ -19,6 +27,9 @@
         <action
             android:id="@+id/action_mainFragment_to_trashFragment"
             app:destination="@id/trashFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_libraryFragment"
+            app:destination="@id/libraryFragment" />
     </fragment>
 
     <fragment
@@ -100,5 +111,27 @@
         android:name="org.kaorun.nouto.ui.fragments.settings.SettingsLanguageFragment"
         android:label="SettingsLanguageFragment"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="org.kaorun.nouto.ui.fragments.LibraryFragment"
+        android:label="LibraryFragment"
+        tools:layout="@layout/fragment_library">
+        <argument
+            android:name="folder_id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="folder_name"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_libraryFragment_self"
+            app:destination="@id/libraryFragment" />
+        <action
+            android:id="@+id/action_libraryFragment_to_settingsMainFragment"
+            app:destination="@id/settingsMainFragment" />
+    </fragment>
 
 </navigation>

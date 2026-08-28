@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Scrim overlay -->
+    <View
+        android:id="@+id/fab_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Sub-FAB items container -->
+    <LinearLayout
+        android:id="@+id/fab_menu_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="112dp"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:visibility="gone">
+
+        <!-- Add Link -->
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonTonalStyle"
+            android:id="@+id/sub_fab_link"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/add_link"
+            android:textColor="?colorOnSecondaryContainer"
+            app:backgroundTint="?colorSecondaryContainer"
+            app:icon="@drawable/add_link_24px"
+            app:iconTint="?colorOnSecondaryContainer"
+            app:iconPadding="12dp"
+            app:cornerRadius="16dp"
+            app:elevation="3dp" />
+
+        <!-- Import Files -->
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonTonalStyle"
+            android:id="@+id/sub_fab_import_files"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/import_files"
+            android:textColor="?colorOnSecondaryContainer"
+            app:backgroundTint="?colorSecondaryContainer"
+            app:icon="@drawable/upload_24px"
+            app:iconTint="?colorOnSecondaryContainer"
+            app:iconPadding="12dp"
+            app:cornerRadius="16dp"
+            app:elevation="3dp" />
+
+        <!-- Create Folder -->
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonTonalStyle"
+            android:id="@+id/sub_fab_create_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/create_folder"
+            android:textColor="?colorOnSecondaryContainer"
+            app:backgroundTint="?colorSecondaryContainer"
+            app:icon="@drawable/create_new_folder_24px"
+            app:iconTint="?colorOnSecondaryContainer"
+            app:iconPadding="12dp"
+            app:cornerRadius="16dp"
+            app:elevation="3dp" />
+
+        <!-- Create Note -->
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonTonalStyle"
+            android:id="@+id/sub_fab_create_note"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/create_note"
+            android:textColor="?colorOnSecondaryContainer"
+            app:backgroundTint="?colorSecondaryContainer"
+            app:icon="@drawable/notes_24px"
+            app:iconTint="?colorOnSecondaryContainer"
+            app:iconPadding="12dp"
+            app:cornerRadius="16dp"
+            app:elevation="3dp" />
+
+    </LinearLayout>
+
+</merge>
