@@ -28,7 +28,8 @@ object ShareImportHelper {
             for (uri in uris) {
                 val (name, mime) = getFileInfo(context, uri)
                 
-                val uniqueFileName = java.util.UUID.randomUUID().toString() + "_" + name
+                val sanitizedName = name.replace(Regex("[\\\\/:*?\"<>|]"), "_")
+                val uniqueFileName = java.util.UUID.randomUUID().toString() + "_" + sanitizedName
                 val localFile = java.io.File(resourcesDir, uniqueFileName)
                 
                 var success = false
