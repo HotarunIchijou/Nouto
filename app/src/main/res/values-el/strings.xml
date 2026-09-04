@@ -1,3 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="save">Αποθήκευση</string>
+    <string name="title">Τίτλος</string>
+    <string name="notes_hint">Πληκτρολόγηση των σημειώσεων εδώ</string>
+    <string name="delete">Διαγραφή</string>
+    <string name="add_note">Προσθήκη σημείωσης</string>
+    <string name="searchbar_hint">Αναζήτηση</string>
+    <string name="notes">Σημειώσεις</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="about">Σχετικά</string>
+    <string name="about_summary">Σχετικά με την εφαρμογή</string>
+    <string name="theme">Θέμα</string>
+    <string name="theme_light">Φωτεινό</string>
+    <string name="theme_dark">Σκοτεινό</string>
+    <string name="theme_system">Προεπιλογή συστήματος</string>
+    <string name="okay">Εντάξει</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="notes_empty">Δεν υπάρχουν σημειώσεις ακόμη</string>
+    <string name="nothing_found">Δεν βρέθηκε κάτι στις σημειώσεις</string>
+    <string name="note_deleted_message">Η σημείωση έχει διαγραφεί</string>
 </resources>
