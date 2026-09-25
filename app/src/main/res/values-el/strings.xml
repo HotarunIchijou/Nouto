@@ -89,4 +89,15 @@
     <string name="system_default">Προεπιλογή συστήματος</string>
     <string name="delete_permanently">Οριστική διαγραφή</string>
     <string name="show_title">Εμφάνιση τίτλου</string>
+    <string name="theming">Παραμετροποίηση εμφάνισης</string>
+    <string name="pure_black_theme_summary">Ορισμός μαύρου φόντου στην εφαρμογή</string>
+    <string name="dialog_keepandroidopen_warning">Η Google έχει ανακοινώσει ότι, από το 2026/2027, όλες οι εφαρμογές σε πιστοποιημένες συσκευές Android θα απαιτούν από τους προγραμματιστές να υποβάλλουν απευθείας στη Google στοιχεία προσωπικής ταυτοποίησης. Καθώς οι προγραμματιστές αυτής της εφαρμογής δεν συμφωνούν με αυτή την απαίτηση, η εφαρμογή δεν θα λειτουργεί πλέον σε πιστοποιημένες συσκευές Android μετά από αυτή την ημερομηνία.</string>
+    <string name="backup_restore_description">Δημιουργία αντιγράφων ασφαλείας και επαναφοράς των σημειώσεων σου. Όλα τα αντίγραφα ασφαλείας αποθηκεύονται τοπικά στη συσκευή</string>
+    <string name="view_only_mode_summary">Άνοιγμα υπάρχουσας σημείωσης σε λειτουργία προβολής</string>
+    <string name="focus_on_content">Εστίαση στο περιεχόμενο</string>
+    <string name="focus_on_content_summary">Αυτόματη εστίαση του πληκτρολογίου στο περιεχόμενο αντί για τον τίτλο</string>
+    <string name="show_title_summary">Εμφάνιση τίτλου στον επεξεργαστή σημειώσεων</string>
+    <string name="bold_style_description">Bold στυλ</string>
+    <string name="italic_style_description">Italic στυλ</string>
+    <string name="underline_style_description">Underline στυλ</string>
 </resources>
